@@ -1,0 +1,27 @@
+.auth-block{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	/*align-items: center;*/
+	width: 100%;
+	height: 100%;
+}
+
+.user-exist {
+	align-self: center;
+}
+
+.auth-login, .auth-password, .auth-password-confirm {
+	width: 50%;
+	flex-basis: 5%;
+	border-radius: 10px;
+	margin-top: 2%;
+	margin-bottom: 2%;
+}
+
+
+html, body {
+	width: 100%;
+	height: 100%;
+}
+

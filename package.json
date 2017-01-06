@@ -1,0 +1,44 @@
+{
+  "name": "uniquora",
+  "version": "0.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "dependencies": {
+    "axios": "",
+    "babel-core": "",
+    "babel-loader": "",
+    "babel-plugin-add-module-exports": "",
+    "babel-plugin-react-html-attrs": "",
+    "babel-plugin-transform-class-properties": "",
+    "babel-plugin-transform-decorators-legacy": "",
+    "babel-preset-es2015": "",
+    "babel-preset-react": "",
+    "babel-preset-stage-0": "",
+    "css-loader": "",
+    "flux": "",
+    "history": "",
+    "jquery": "^3.1.1",
+    "normalizr": "^3.0.2",
+    "react": "",
+    "react-dom": "",
+    "react-redux": "",
+    "react-router": "",
+    "react-svg": "",
+    "redux": "",
+    "redux-logger": "",
+    "redux-promise-middleware": "",
+    "redux-thunk": "",
+    "style-loader": "",
+    "svg-url-loader": ""
+  },
+  "devDependencies": {
+    "webpack": "^2.2.0-rc.3",
+    "webpack-dev-server": "^2.2.0-rc.0"
+  },
+  "scripts": {
+    "dev": "webpack-dev-server --content-base src --inline --hot --history-api-fallback",
+    "build": "NODE_ENV=production webpack --config webpack.production.config.js -p"
+  },
+  "author": "",
+  "license": "ISC"
+}
