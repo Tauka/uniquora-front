@@ -11,6 +11,7 @@ This is front-end part of UNIQUORA project developed by Sagynysh Baitursynov and
 3. `npm run build` for build purposes
 
 ###TODO
+* Mastering requests to API
 * Forming data shape in reducers
 * Normalizing received data and splitting into reducers
 * Data transfer between components
