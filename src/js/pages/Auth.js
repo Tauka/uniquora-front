@@ -1,7 +1,7 @@
 import React from "react";
-// import { browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import { connect } from "react-redux";
-import { registerUser } from "../actions/userActions";
+import { registerUser, authorizeUser, logoutUser, verifyToken } from "../actions/userActions";
 import auth from "../css/auth.css";
 // import ReactSVG from "react-svg";
 
@@ -21,17 +21,18 @@ export default class Auth extends React.Component {
 		}
 	};
 
-	// componentWillMount() {
-	// 	if (!this.props.user.isAuth) {
-	// 		this.props.dispatch(verifyToken(localStorage.getItem("token")));
-	// 	}
-	// }
+	componentWillMount() {
+		if (!this.props.user.isAuth) {
+			this.props.dispatch(verifyToken(localStorage.getItem("token")));
+		}
+	}
 
-	// componentWillReceiveProps(nextProps) {
-	// 	if (nextProps.user.isAuth) {
-	// 		this.props.router.push('/index');
-	// 	}
-	// }
+	//ROUTE TO FEED IF LOGGED IN
+	componentWillUpdate() {
+		if (this.props.user.isAuth) {
+			this.props.router.push('/feed');
+		}
+	}
 
 
 	handleChange(event) {
@@ -66,29 +67,26 @@ export default class Auth extends React.Component {
 
 	  }
 
-	//  validateNUemail(authLogin) {	
-	//  	if (authLogin.includes("@nu.edu.kz")) {
-	//  		console.log("NU STUDENT DETECTED");
+	 validateNUemail(authLogin) {	
+	 	if (authLogin.includes("@nu.edu.kz")) {
+	 		console.log("NU STUDENT DETECTED");
 
-	//  		if (authLogin != this.state.authLogin) {
-	//  			this.props.dispatch(checkIfUserExist({
-	//  				email: authLogin
-	//  			}));
-	//  		}
+	 		// if (authLogin != this.state.authLogin) {
+	 		// 	this.props.dispatch(checkIfUserExist({
+	 		// 		email: authLogin
+	 		// 	}));
+	 		// }
 
- // 			this.setState({
- // 				NUconfirm: true
- // 			});
- // 		} else {
-
- // 			this.props.dispatch(dontCheckUserExist());
-
- // 			this.setState({
- // 				NUconfirm: false
- // 			});
- // 		}
+ 			this.setState({
+ 				NUconfirm: true
+ 			});
+ 		} else {
+ 			this.setState({
+ 				NUconfirm: false
+ 			});
+ 		}
 	 	
-	//  }
+	 }
 
 	//  autoLogin(authLogin, authPassword) {
  // 		if (!this.props.user.isAuth && this.state.authPassword.length >= 5 && this.props.user.userExist) {
@@ -111,6 +109,13 @@ export default class Auth extends React.Component {
 	 	
 	 }
 
+	 buttonLogin() {
+	 	this.props.dispatch(authorizeUser({
+	 		email: this.state.authLogin,
+	 		password: this.state.authPassword
+	 	}));
+	 }
+
 	render() {
 
 		let userExistMessage;
@@ -124,25 +129,17 @@ export default class Auth extends React.Component {
 
 		// 	if (!this.props.user.userExist) {
 				authPasswordConfirm = 
-				<div>
-					<div class="row">
-						<label class="column column-50 column-offset-25 animated fadeIn" for="confirmPasswordField">Confirm Password</label>
-					</div>
-					<div class="row">
-						<input class="column column-50 column-offset-25 animated fadeIn" onChange={this.handleChange.bind(this)} type="password" id="confirmPasswordField"/>
-					</div>
+				<div class="confirm-password-field-label">
+						<label class="" for="confirmPasswordField">Confirm Password</label>
+						<input class="auth-password-confirm" onChange={this.handleChange.bind(this)} type="password" id="confirmPasswordField"/>
 				</div> 
 		// 	}
 
 
 			authPassword = 
-			<div>
-				<div class="row">
-					<label class="column column-50 column-offset-25 auth-password-confirm animated fadeIn" for="passwordField">Password</label>
-				</div>
-				<div class="row">
-					<input class="column column-50 column-offset-25 auth-password animated fadeIn" onChange={this.handleChange.bind(this)} type="password" id="passwordField"/>
-				</div>
+			<div class="password-field-label">
+					<label class="" for="passwordField">Password</label>
+					<input class="auth-password" onChange={this.handleChange.bind(this)} type="password" id="passwordField"/>
 			</div>;
 		// }
 
@@ -152,20 +149,17 @@ export default class Auth extends React.Component {
 		return (
 			
 			<div class="auth-block">
-				<h1 class="user-exist animated fadeIn">UNIQUORA</h1>
+				<h1 class="header">UNIQUORA</h1>
 				{userExistMessage}
-				<form>
-				  <fieldset>
-				  	<div class="row">
-				    	<label class="column column-50 column-offset-25 animated fadeIn"  for="nameField">Email</label>
-				    </div>
-				    <div class="row">
-				    	<input class="column column-50 column-offset-25 auth-login animated fadeIn" type="text" onChange={this.handleChange.bind(this)} placeholder="tauyekel.kunzhol@nu.edu.kz" id="nameField"/>
+			  	<div class="fields">
+				  	<div class="login-field-label">
+				    	<label class=""  for="nameField">Email</label>
+				    	<input class="auth-login" type="text" onChange={this.handleChange.bind(this)} placeholder="tauyekel.kunzhol@nu.edu.kz" id="nameField"/>
 				    </div>
 				    {authPassword}
 				    {authPasswordConfirm}
-				  </fieldset>
-				</form>
+			  	</div>
+				<button class="auth-button" onClick={this.buttonLogin.bind(this)}>LOGIN</button>
 				
 			</div>
 			);

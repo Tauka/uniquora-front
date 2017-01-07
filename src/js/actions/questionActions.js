@@ -5,16 +5,17 @@ import axios from "axios";
 
 export function fetchQuestions() {
 	return function(dispatch) {
-		dispatch({type: "USER_REGISTER_PENDING"});
-		axios.get(`http://${API_ROOT}/api/questions`)
+		dispatch({type: "QUESTION_FETCH_PENDING"});
+		axios.get(`http://${API_ROOT}/api/courses`, {
+			headers: {'JWT': getState().users.token}
+		})
 		.then((response) => {				
 			//if registration is successful tell it to reducer and authorize user
-			dispatch({type: "USER_REGISTER_SUCCESS"});
-			dispatch(authorizeUser(response.user));
+			dispatch({type: "QUESTION_FETCH_SUCCESS", payload: response});
 		})
 		.catch((err) => {
 			dispatch({
-				type: "USER_REGISTER_FAIL",
+				type: "QUESTION_FETCH_FAIL",
 				payload: err
 			});
 		});

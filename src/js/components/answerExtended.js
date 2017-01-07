@@ -1,5 +1,5 @@
 import React from 'react';
-import from '../css/answerExtended.css';
+import '../css/answerExtended.css';
 
 export default class AnswerExtended extends React.Component {
 	render() {

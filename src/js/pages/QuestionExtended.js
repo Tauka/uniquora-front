@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import answerExtended from '../components/answerExtended';
-import from '../css/questionExtended.css';
+import '../css/questionExtended.css';
 
 @connect((store) => {
 	return {

@@ -14,8 +14,9 @@ import store from "./store";
 // import "milligram";
 
 import AppContainer from "./pages/AppContainer"
-// import MapComponent from "./pages/Map";
 import Auth from "./pages/Auth";
+import Feed from "./pages/Feed";
+import QuestionExtended from "./pages/QuestionExtended"
 
 
 
@@ -26,6 +27,8 @@ ReactDOM.render(
 		<Router history = {browserHistory}>
 			<Route path="/" component={AppContainer} >
 				<IndexRoute name="auth" component={Auth}></IndexRoute>
+				<Route path="feed" component={Feed}/>
+				<Route path="question/:questionId" component={QuestionExtended}/>
 			</Route>
 		</Router>
 	</Provider>, 

@@ -2,25 +2,33 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	/*align-items: center;*/
+	align-items: center;
 	width: 100%;
 	height: 100%;
+
 }
 
-.user-exist {
-	align-self: center;
+.fields, button {
+	width: 100%;
 }
+.header {
 
-.auth-login, .auth-password, .auth-password-confirm {
-	width: 50%;
-	flex-basis: 5%;
-	border-radius: 10px;
-	margin-top: 2%;
-	margin-bottom: 2%;
 }
 
 
-html, body {
+.auth-login, .auth-password, .auth-password-confirm, .auth-button {
+	/*flex-basis: 5%;*/
+
+	/*border-radius: 10px;*/
+}
+
+.login-field-label, .password-field-label, .confirm-password-field-label {
+	display: flex;
+	flex-direction: column;
+}
+
+
+html, body, #app {
 	width: 100%;
 	height: 100%;
 }
