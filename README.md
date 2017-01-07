@@ -14,8 +14,11 @@ This is front-end part of UNIQUORA project developed by Sagynysh Baitursynov and
 * Forming data shape in reducers
 * Normalizing received data and splitting into reducers
 * Data transfer between components
-* Onclick functionality
-* Basic divs, positions, responsiveness
+
+###DONE
+* Basic routing
+* Basic onClick functionality (binded action calls to components)
+* Basic responsive design
 
 ###PROBLEMS
-* Can't send POST request neither through **axios**, nor **jquery**
+* Login API doesn't work
