@@ -1,0 +1,122 @@
+.left-content, .center-content, .right-content {
+	margin-top: 6.25rem;
+}
+
+.left-content, .right-content {
+	position: fixed;
+	width: 30%;
+}
+
+.center-content {
+	width: 40%;
+}
+
+
+.left-content {
+	left: 0;
+	height: 100%;
+	text-align: center;
+
+	.filter-title {
+		font-weight: 600;
+		font-size: 1.2rem;
+	}
+
+	.form-group {
+		margin-top: 2.5rem;
+		width: 70%;
+
+		input {
+		}
+	}
+
+	.sort-select {
+		margin-top: 2.5rem;
+		width: 70%;
+	}
+
+	.filter, .sort {
+		height: 50%;
+	}
+}
+
+.right-content {
+	right: 0;
+	height: 100%;
+
+	.card {
+		width: 70%;
+
+		.card-header {
+			text-align: center;
+			font-size: 1.1rem;
+			color: #373A3C;
+			font-weight: 600;
+
+		}
+
+		.card-block {
+			.user {
+				.user-image {
+					border-radius: 100%;
+					width: 4rem;
+					height: 4rem;
+				}
+
+				.user-info {
+					.user-info-stats {
+						.fa-heart {
+							color: #B73434;
+						}
+
+						.fa-question {
+							color: #CFD01D;
+						}
+
+						.user-info-stats-points, .user-info-stats-questions {
+							font-size: 0.9rem;
+						}
+					}
+
+					.user-info-details {
+						font-size: 0.9rem;
+						color: #818A91;
+					}
+				}
+			}
+		}
+
+		.list-group {
+			border: none;
+
+			a {
+				font-size: 1rem;
+			}
+		}
+	}
+}
+
+/* MEDIA QUERIES */
+@media only screen 
+	and (max-device-width: 768px) {
+		.center-content {
+			width: 90%;
+		}
+
+		html {
+			font-size: 14px;
+		}
+
+		.left-content, .right-content {
+			display: none;
+		}
+	}
+
+@media only screen 
+	and (min-device-width: 768px)
+	and (max-device-width: 960px) {
+
+		html {
+			font-size: 12px;
+		}
+	}

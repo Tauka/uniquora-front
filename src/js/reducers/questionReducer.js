@@ -1,29 +1,44 @@
+import { questionActions } from "../actions/questionActions";
+
 export default function reducer(state={
 	questions: [],
-	questionPending: false,
-	questionSuccess: false,
-	questionFetching: false,
-	questionFetched: false,
+	extendedQuestion: {},
+	questionAddPending: false,
+	questionAddSuccess: false,
+	questionGetPending: false,
+	questionGetSuccess: false,
+	questionGetError: null,
+	questionsFetchSuccess: false,
+	questionsFetchPending: false,
 	error: null
 }, action) {
 	switch(action.type) {
-		case "QUESTIONS_FETCH_PENDING": {
-			return {...state, questionFetching: true, questionFetched: false}
+		case questionActions.QUESTIONS_FETCH_PENDING: {
+			return {...state, questionsFetchPending: true}
 		}
-		case "QUESTIONS_FETCH_SUCCESS": {
-			return {...state, questionFetching: false, questionFetched: true, questions: action.payload}
+		case questionActions.QUESTIONS_FETCH_SUCCESS: {
+			return {...state, questionsFetchPending: false, questionsFetchSuccess: true, questions: [...action.payload.data]}
 		}
-		case "QUESTIONS_FETCH_FAIL": {
-			return {...state, questionFetching: false, questionFetched: false, error: action.payload}
+		case questionActions.QUESTIONS_FETCH_FAIL: {
+			return {...state, questionsFetching: false, questionsFetchSuccess: false, error: action.payload}
 		}
-		case "QUESTION_ADD_PENDING": {
-			return {...state, questionPending: true, questionSuccess: false}
+		case questionActions.QUESTION_GET_PENDING: {
+			return {...state, questionGetPending: true, questionGetSuccess: false}
 		}
-		case "QUESTION_ADD_SUCCESS": {
-			return {...state, questionPending: false, questionSuccess: true}
+		case questionActions.QUESTION_GET_SUCCESS: {
+			return {...state, questionGetPending: false, questionGetSuccess: true, extendedQuestion: action.payload}
 		}
-		case "QUESTION_ADD_FAIL": {
-			return {...state, questionPending: false, questionSuccess: false}
+		case questionActions.QUESTION_GET_FAIL: {
+			return {...state, questionGetPending: false, questionGetSuccess: false, questionGetError: action.payload}
+		}
+		case questionActions.QUESTION_ADD_PENDING: {
+			return {...state, questionAddPending: true, questionAddSuccess: false}
+		}
+		case questionActions.QUESTION_ADD_SUCCESS: {
+			return {...state, questionAddPending: false, questionAddSuccess: true}
+		}
+		case questionActions.QUESTION_ADD_FAIL: {
+			return {...state, questionAddPending: false, questionAddSuccess: false}
 		}
 	}
 

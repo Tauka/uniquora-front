@@ -8,11 +8,21 @@
 
 }
 
-.fields, button {
-	width: 100%;
+.fields {
+	width: 50%;
+	height: 30%;
 }
-.header {
 
+.auth-button {
+	width: 50%;
+}
+
+.user-exist-message {
+	height: 10%;
+}
+
+.header {
+	font-size: 5rem;
 }
 
 
@@ -25,6 +35,10 @@
 .login-field-label, .password-field-label, .confirm-password-field-label {
 	display: flex;
 	flex-direction: column;
+}
+
+.auth-input-addon {
+	width: 8%;
 }
 
 

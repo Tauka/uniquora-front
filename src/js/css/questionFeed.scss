@@ -1,0 +1,59 @@
+.question-feed {
+	width: 100%;
+	margin: 0 0 5% 0;
+}
+
+.card-header {
+	background-color: white;
+
+	.question-title {
+		font-size: 1.2rem;
+		font-weight: 400;
+		color: #373A3C;
+	}
+
+	.badge {
+		// position: absolute;
+		// font-size: 0.7rem;
+		// font-weight: 500;
+		height: 1.25rem;
+		// right: 10px;
+		// top: 1.25rem;
+	}
+}
+
+.card-block {
+	.best-answer {
+
+	}
+
+	.card-text {
+		font-weight: 300;
+		font-size: 1rem;
+	}
+}
+
+.user {
+	.user-image {
+		border-radius: 100%;
+		height: 2.7rem;
+		width: 2.7rem;
+	}
+
+	.user-info-answer {
+
+		.user-name {
+			font-size: 0.9rem;
+			font-weight: 600;
+		}
+
+		.user-details {
+			font-size: 0.7rem;
+			color: #818A91;
+		}
+	}
+}
+
+.green-best {
+	color: #49C581;
+}

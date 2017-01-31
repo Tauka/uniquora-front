@@ -17,6 +17,10 @@ module.exports = {
         }
       },
       {
+        test: /\.scss$/,
+        loaders: ["style-loader", "css-loader", "sass-loader"]
+      },
+      {
         test: /\.css$/, 
         loader: "style-loader!css-loader" 
       },
@@ -25,10 +29,10 @@ module.exports = {
         loader: 'svg-url-loader'
       },
       { 
-        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader:"url?limit=10000&mimetype=application/font-woff" 
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader:"url-loader?limit=10000&mimetype=application/font-woff" 
       },
       { 
-        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file" 
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" 
       }
     ]
   },
@@ -39,6 +43,13 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
         API_ROOT: JSON.stringify("138.68.109.140"),
+    }),
+    new webpack.ProvidePlugin({   
+            jQuery: 'jquery',
+            $: 'jquery',
+            jquery: 'jquery',
+            Tether: 'tether',
+            "window.Tether": "tether"
     })
   ]
 };

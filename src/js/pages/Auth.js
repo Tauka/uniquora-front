@@ -1,8 +1,8 @@
 import React from "react";
 import { browserHistory } from 'react-router';
 import { connect } from "react-redux";
-import { registerUser, authorizeUser, logoutUser, verifyToken } from "../actions/userActions";
-import auth from "../css/auth.css";
+import { registerUser, authorizeUser, logoutUser, userExist, userExistReset } from "../actions/userActions";
+import auth from "../css/auth.scss";
 // import ReactSVG from "react-svg";
 
 
@@ -22,16 +22,24 @@ export default class Auth extends React.Component {
 	};
 
 	componentWillMount() {
-		if (!this.props.user.isAuth) {
-			this.props.dispatch(verifyToken(localStorage.getItem("token")));
+		
+	}
+
+	componentWillReceiveProps(nextProps) {
+		//this works!
+		if (nextProps.user.isAuth) {
+			this.props.router.push('/');
 		}
 	}
 
 	//ROUTE TO FEED IF LOGGED IN
 	componentWillUpdate() {
-		if (this.props.user.isAuth) {
-			this.props.router.push('/feed');
-		}
+		//this won't work, because we're updating props, and change will be reflected on next componentWillUpdate
+		//if (this.props.user.isAuth) {
+			//this.props.router.push('/');
+		//}
+
+		// console.log("COMPONENT WILL UPDATE!");
 	}
 
 
@@ -49,9 +57,9 @@ export default class Auth extends React.Component {
 			authPasswordConfirm = event.target.value;
 		}
 
-		// this.validateNUemail(authLogin);
+		this.validateNUemail(authLogin);
 		this.validatePassword(authLogin, authPassword, authPasswordConfirm);
-		// this.autoLogin(authLogin, authPassword);
+		this.autoLogin(authLogin, authPassword);
 
 		this.setState({
 			authLogin: authLogin
@@ -71,31 +79,26 @@ export default class Auth extends React.Component {
 	 	if (authLogin.includes("@nu.edu.kz")) {
 	 		console.log("NU STUDENT DETECTED");
 
-	 		// if (authLogin != this.state.authLogin) {
-	 		// 	this.props.dispatch(checkIfUserExist({
-	 		// 		email: authLogin
-	 		// 	}));
-	 		// }
+	 		//this handles dispatch when there's typo and user changes only before @nu.edu.kz part
+	 		if (authLogin != this.state.authLogin) {
+	 			this.props.dispatch(userExist(authLogin));
+	 		}
 
- 			this.setState({
- 				NUconfirm: true
- 			});
  		} else {
- 			this.setState({
- 				NUconfirm: false
- 			});
+
+ 			this.props.dispatch(userExistReset());
  		}
 	 	
 	 }
 
-	//  autoLogin(authLogin, authPassword) {
- // 		if (!this.props.user.isAuth && this.state.authPassword.length >= 5 && this.props.user.userExist) {
-	//  		this.props.dispatch(authUser({
-	//  			email: authLogin,
-	//  			password: authPassword
-	//  		}));
-	//  	}
-	//  }
+	 autoLogin(authLogin, authPassword) {
+ 		if (this.state.authPassword.length >= 5 && this.props.user.userExistSuccess) {
+	 		this.props.dispatch(authorizeUser({
+	 			email: authLogin,
+	 			password: authPassword
+	 		}));
+	 	}
+	 }
 
 	 validatePassword(authLogin, authPassword, authPasswordConfirm) {
 	 	if (this.state.authPassword.length >= 8 && (authPassword == authPasswordConfirm) && (authPassword != "")) {
@@ -109,39 +112,42 @@ export default class Auth extends React.Component {
 	 	
 	 }
 
-	 buttonLogin() {
-	 	this.props.dispatch(authorizeUser({
-	 		email: this.state.authLogin,
-	 		password: this.state.authPassword
-	 	}));
-	 }
+	 // buttonLogin() {
+	 // 	this.props.dispatch(authorizeUser({
+	 // 		email: this.state.authLogin,
+	 // 		password: this.state.authPassword
+	 // 	}));
+	 // }
 
 	render() {
 
 		let userExistMessage;
 		let authPassword;
 		let authPasswordConfirm;
+		let loading;
 
-		// console.log(this.props.user.userExist);
+		//userExistSuccess == null => response has not been sent; true or false => response has been sent
+		if (this.props.user.userExistSuccess != null) {
+			userExistMessage = this.props.user.userExistSuccess ? <h5 class="user-exist">LOGIN</h5> : <h5 class="user-exist">REGISTER</h5>
 
-		// if (this.state.NUconfirm && this.props.user.userExist != null) {
-		// 	userExistMessage = this.props.user.userExist ? <h3 class="user-exist">LOGIN</h3> : <h3 class="user-exist">REGISTER</h3>
-
-		// 	if (!this.props.user.userExist) {
+			if (!this.props.user.userExistSuccess) {
 				authPasswordConfirm = 
-				<div class="confirm-password-field-label">
-						<label class="" for="confirmPasswordField">Confirm Password</label>
-						<input class="auth-password-confirm" onChange={this.handleChange.bind(this)} type="password" id="confirmPasswordField"/>
-				</div> 
-		// 	}
+				<div class="input-group">
+					<span class="input-group-addon auth-input-addon" id="basic-addon1"><i class="fa fa-unlock fa-lg"></i></span>
+					<input type="password" class="form-control auth-password-confirm" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
+				</div>
+			}
 
 
 			authPassword = 
-			<div class="password-field-label">
-					<label class="" for="passwordField">Password</label>
-					<input class="auth-password" onChange={this.handleChange.bind(this)} type="password" id="passwordField"/>
-			</div>;
-		// }
+			<div class="input-group mt-3 mb-3">
+				<span class="input-group-addon auth-input-addon" id="basic-addon1"><i class="fa fa-unlock-alt fa-lg"></i></span>
+				<input type="password" class="form-control auth-password" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
+			</div>
+		}
+
+
+		loading = this.props.user.userExistPending ? <h5 class="user-exist-loading"> LOADING </h5> : null;
 
 		
 
@@ -149,17 +155,19 @@ export default class Auth extends React.Component {
 		return (
 			
 			<div class="auth-block">
-				<h1 class="header">UNIQUORA</h1>
-				{userExistMessage}
-			  	<div class="fields">
-				  	<div class="login-field-label">
-				    	<label class=""  for="nameField">Email</label>
-				    	<input class="auth-login" type="text" onChange={this.handleChange.bind(this)} placeholder="tauyekel.kunzhol@nu.edu.kz" id="nameField"/>
+				<h1 class="header display-1">UNIQUORA</h1>
+				<div class="user-exist-message">
+					{userExistMessage}
+					{loading}
+				</div>
+			  	<div class="fields d-flex flex-column">
+				    <div class="input-group">
+				    	<span class="input-group-addon auth-input-addon" id="basic-addon1"><i class="fa fa-envelope fa-lg"></i></span>
+				    	<input type="text" class="form-control auth-login" placeholder="tauyekel.kunzhol@nu.edu.kz" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
 				    </div>
 				    {authPassword}
 				    {authPasswordConfirm}
 			  	</div>
-				<button class="auth-button" onClick={this.buttonLogin.bind(this)}>LOGIN</button>
 				
 			</div>
 			);

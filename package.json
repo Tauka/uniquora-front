@@ -14,6 +14,7 @@
     "babel-preset-es2015": "",
     "babel-preset-react": "",
     "babel-preset-stage-0": "",
+    "bootstrap": "^4.0.0-alpha.6",
     "css-loader": "",
     "flux": "",
     "history": "",
@@ -29,10 +30,14 @@
     "redux-promise-middleware": "",
     "redux-thunk": "",
     "style-loader": "",
-    "svg-url-loader": ""
+    "svg-url-loader": "",
+    "tether": "^1.4.0"
   },
   "devDependencies": {
-    "webpack": "^2.2.0-rc.3",
+    "node-sass": "^4.3.0",
+    "sass-loader": "^4.1.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^2.2.0-rc.4",
     "webpack-dev-server": "^2.2.0-rc.0"
   },
   "scripts": {
