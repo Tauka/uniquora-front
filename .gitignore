@@ -1,3 +1,11 @@
 #NODE
 node_modules
 npm-debug.log
+
+#BUILD
+*.eot
+*.svg
+*.woff2
+*.ttf
+*.woff
+index.min.js
