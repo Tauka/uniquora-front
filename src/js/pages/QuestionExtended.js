@@ -26,7 +26,11 @@ export default class QuestionExtended extends React.Component {
 			questionId: this.props.router.params.questionId
 		}));
 
-		this.props.dispatch(getQuestion(this.props.router.params.questionId));
+		if (!this.props.answers.answerPending) {
+			this.props.dispatch(getQuestion(this.props.router.params.questionId));
+		}
+
+		
 	}
 
 	mainRender() {

@@ -7,7 +7,7 @@ export default function reducer(state={
 	registerSuccess: false,
 	authorizePending: false,
 	logoutPending: false,
-	isAuth: false,
+	isAuth: true,
 	token: localStorage.getItem("token"),
 	userExistPending: false,
 	userExistSuccess: null,

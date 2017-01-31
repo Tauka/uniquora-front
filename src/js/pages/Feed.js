@@ -18,12 +18,24 @@ export default class Feed extends React.Component {
 		this.logout = this.logout.bind(this);
 		this.goToFeed = this.goToFeed.bind(this);
 		this.addQuestion = this.addQuestion.bind(this);
-		this.handleChange = this.handleChange.bind(this);
+		this.searchHandleChange = this.searchHandleChange.bind(this);
+		this.courseHandleChange = this.courseHandleChange.bind(this);
 		this.onRootClick = this.onRootClick.bind(this);
 
 		this.state = {
-		      typedValue: null,
-		      dropdownRender: true
+		      searchTypedValue: null,
+		      searchDropdownRender: true,
+		      courseDropdownRender: true,
+		      courseValue: null,
+		      courseValueToRequest: null,
+		      tempCourses: [
+		      	"Intro to C Programming",
+		      	"Microcontrollers with Lab",
+		      	"Intro to Comic Book",
+		      	"Database Systems",
+		      	"Operating Systems",
+		      	"Computer Networks"
+		      ]
 		};
 	}
 
@@ -42,7 +54,7 @@ export default class Feed extends React.Component {
 		this.props.dispatch(addQuestion({
 			title: $("#question-title-input").val(),
 			text: $("#question-details-input").val(),
-			courseId: "1",
+			courseId: this.state.courseValueToRequest,
 			isAnonymous: false
 		}));
 	}
@@ -54,22 +66,39 @@ export default class Feed extends React.Component {
 
 	onRootClick() {
 		this.setState({
-			dropdownRender: false
+			searchDropdownRender: false,
+			courseDropdownRender: false
+
 		})
 	}
 
 
-	handleChange(event) {
+	searchHandleChange(event) {
 		this.setState({
-			dropdownRender: true, 
-			typedValue: event.target.value
+			searchDropdownRender: true, 
+			searchTypedValue: event.target.value
 		}); 
+	}
+
+	courseHandleChange(event) {
+		this.setState({
+			courseDropdownRender: true,
+			courseValue: event.target.value
+		})
+	}
+
+	onCourseModalClick(id, name) {
+		this.setState({ courseValueToRequest: id});
+		$("#question-course-title").val(name);
+
 	}
 
 	goToFeed() {
 		if (this.props.router.location.pathname != "/") {
 			this.props.router.push('/');
 		}
+
+
 	}
 
 	logout() {
@@ -101,23 +130,23 @@ export default class Feed extends React.Component {
 	// 	}
 	// }
 
-	autoComplete(suggestions) {
-		if (this.state.typedValue != "" && this.state.typedValue != null && this.state.dropdownRender) {
-			return <AutoComplete typedValue={this.state.typedValue} onclick={(id) => { this.goToQuestionForm(id) } } suggestions={suggestions} addQuestion={true} style={{width: "49%", top: "2.8rem"}}/>
+	autoComplete(suggestions, typedValue, dropdownRender, onclickFunc, style, questionButton) {
+		if (typedValue != "" && typedValue != null && dropdownRender) {
+			return <AutoComplete typedValue={typedValue} onclick={ onclickFunc } suggestions={suggestions} addQuestion={questionButton} style={style}/>
 		} 
 	}
 
 	render() {
 		let questions = this.props.questions.questions.map((questionItem) => { return <QuestionFeed question={ questionItem } />});;
 		let suggestions = this.props.questions.questions.map((questionItem) => { return { title: questionItem.title, id: questionItem.id } });
-		console.log(this.props.questions);
+		let courses =  this.state.tempCourses.map((course) => { return { title: course, id: 1 } });
 		return (
 			 	<div class="feed-root" onClick={this.onRootClick}>
 					<nav class="navbar fixed-top navbar-light flex-row bg-faded justify-content-between">
 					  	<a class="navbar-brand" onClick={this.goToFeed}><b>UNIQUORA</b></a>
 					    <form class="form-inline" style={{flexBasis: "50%"}}>
-					      <input class="navbar-input form-control" type="text" placeholder="Search" onChange={this.handleChange} style={{width: "100%"}}/>
-					      { this.autoComplete(suggestions) }
+					      <input class="navbar-input form-control" type="text" placeholder="Search" onChange={this.searchHandleChange} style={{width: "100%"}}/>
+					      { this.autoComplete(suggestions, this.state.searchTypedValue, this.state.searchDropdownRender, (id) => { this.goToQuestionForm(id) }, {width: "49%", top: "2.8rem"}, true) }
 					    </form>
 					    <button class="btn btn-outline-warning" onClick={this.logout}>LOGOUT</button>
 					</nav>
@@ -137,6 +166,8 @@ export default class Feed extends React.Component {
 				      <div class="modal-body">
 				      	<div class="form-group">
 				      		<input id="question-title-input" class="form-control" type="text" placeholder="Your question"/>
+				      		<input id="question-course-title" class="form-control mt-2" type="text" onChange={this.courseHandleChange} placeholder="Enter course title"/>
+				      		{ this.autoComplete(courses, this.state.courseValue, this.state.courseDropdownRender, (id, name) => { this.onCourseModalClick(id, name) }, {width: "92%", top: "10.3rem"}, false) }
 				      		<textarea id="question-details-input"class="form-control mt-2" rows="3" type="text" placeholder="Detailed question" style={{resize: "none"}}/>
 				      	</div>
 				      </div>
