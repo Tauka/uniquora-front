@@ -1,5 +1,5 @@
 import React from "react";
-import { browserHistory } from 'react-router';
+import { hashHistory } from 'react-router';
 import { connect } from "react-redux";
 import { registerUser, authorizeUser, logoutUser, userExist, userExistReset } from "../actions/userActions";
 import auth from "../css/auth.scss";

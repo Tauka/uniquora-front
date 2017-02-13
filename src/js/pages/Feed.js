@@ -60,7 +60,8 @@ export default class Feed extends React.Component {
 	}
 
 	goToQuestionForm(questionId) {
-		this.props.router.push(`/question/${questionId}`);
+		console.log(this.props.router);
+		this.props.router.push(`question/${questionId}`);
 	}
 
 

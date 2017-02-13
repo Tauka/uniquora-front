@@ -1,5 +1,5 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
+import { hashHistory } from 'react-router';
 import '../css/questionFeed.scss';
 
 export default class QuestionFeed extends React.Component {

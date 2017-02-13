@@ -8,7 +8,7 @@
 }
 
 .center-content {
-	width: 40%;
+	width: 50%;
 }
 
 
@@ -119,4 +119,14 @@
 		html {
 			font-size: 12px;
 		}
+
 	}
+
+	@media only screen 
+		and (min-device-width: 960px)
+		and (max-device-width: 1280px) {
+
+			.center-content {
+				width: 40%;
+			}
+		}

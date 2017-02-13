@@ -1,5 +1,7 @@
 import axios from "axios";
 import { unauthorizedRequest } from "./userActions";
+import { updateAnswers } from "./answerActions";
+import { normalize, schema } from 'normalizr';
 
 export const questionActions = {
 	QUESTIONS_FETCH_PENDING: "QUESTIONS_FETCH_PENDING",
@@ -46,7 +48,21 @@ export function getQuestion(questionId) {
 		})
 		.then((response) => {				
 			//if registration is successful tell it to reducer and authorize user
+			// const user = new schema.Entity('users');
+			const answer = new schema.Entity('answers', {
+				// creator: user
+			});
+			const question = new schema.Entity('questions', {
+				// creator: user,
+				answerList: [ answer ]
+			});
+
+
+			const normalizedQuestion = normalize(response.data, question);
+			console.log(normalizedQuestion);
 			dispatch({type: questionActions.QUESTION_GET_SUCCESS, payload: response.data});
+			dispatch(updateAnswers(normalizedQuestion.entities.answers));
+
 		})
 		.catch((err) => {
 			if (err.response != undefined && err.response.data == "login") {

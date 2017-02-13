@@ -32,7 +32,7 @@ export default class FeedMainWrapper extends React.Component {
 					  </div>
 				  </div>
 
-					<div class="card trending-card mt-5 ml-auto mr-auto">
+					{/*<div class="card trending-card mt-5 ml-auto mr-auto">
 						<div class="card-header">
 							Trending questions
 						</div>
@@ -58,7 +58,7 @@ export default class FeedMainWrapper extends React.Component {
 					  	  	<div class="badge badge-pill badge-info d-inline ml-auto">CSCI151</div>
 					  	  </a>
 					  	</div>
-					</div>
+					</div>*/}
 					</div>
 			</div>
 		);

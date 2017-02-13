@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Router, Route, IndexRoute, browserHistory } from "react-router";
+import { Router, Route, IndexRoute, hashHistory } from "react-router";
 //import "./leaflet";
 import { Provider } from "react-redux";
 import store from "./store";
@@ -25,7 +25,7 @@ const app = document.getElementById('app');
 
 ReactDOM.render(
 	<Provider store={store}>
-		<Router history = {browserHistory}>
+		<Router history = {hashHistory}>
 			<Route path="/" component={AppContainer} >
 				<Route path="" name="feed" component={Feed}>
 					<Route path="" name="feed-main-wrapper" component={FeedMainWrapper}>

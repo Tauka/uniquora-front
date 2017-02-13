@@ -69,7 +69,7 @@ export default class FeedMain extends React.Component {
 
 		return (
 			<div>
-				<div class="left-content">
+				{/* <div class="left-content">
 					<div class="filter">
 						<div class="filter-title"> Filters </div>
 						<div class="form-group mr-auto ml-auto">
@@ -87,7 +87,7 @@ export default class FeedMain extends React.Component {
 				  		  <option>Alphabet</option>
 				  		</select>
 				  	</div>
-				</div>
+				</div> */ }
 				<div class="center-content d-flex flex-column align-items-center mr-auto ml-auto">
 					{ questionsRender }
 				</div>

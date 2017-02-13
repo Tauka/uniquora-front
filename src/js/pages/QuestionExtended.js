@@ -18,6 +18,10 @@ export default class QuestionExtended extends React.Component {
 	
 	componentWillMount() {
 		this.props.dispatch(getQuestion(this.props.router.params.questionId));
+		//detect url change
+		this.props.router.listen((location) => {
+			this.props.dispatch(getQuestion(this.props.router.params.questionId));
+		});
 	}
 
 	addAnswer() {
@@ -25,12 +29,6 @@ export default class QuestionExtended extends React.Component {
 			text: $("#add-answer").val(),
 			questionId: this.props.router.params.questionId
 		}));
-
-		if (!this.props.answers.answerPending) {
-			this.props.dispatch(getQuestion(this.props.router.params.questionId));
-		}
-
-		
 	}
 
 	mainRender() {
@@ -48,13 +46,22 @@ export default class QuestionExtended extends React.Component {
 	}
 
 	trueRender() {
+
 		if (this.props.pending && !this.props.success) {
 			//LOADING
 			return <div> LOADING </div>
 		} else if (!this.props.pending && this.props.success) {
 			let answers;
-			if (this.props.questionExtended.answerList != undefined) {
-				answers = this.props.questionExtended.answerList.map((answer) => { return <AnswerExtended answer={answer}/> });
+			if (this.props.answers.answers != null) {
+
+				let answersArray = [];
+				let answersObject = this.props.answers.answers;
+
+				Object.keys(answersObject).forEach(key => {
+				    answersArray.push(answersObject[key]);
+				});
+
+				answers = answersArray.map((answer) => { return <AnswerExtended answer={answer}/> });
 			}
 
 			//MAIN
@@ -63,7 +70,7 @@ export default class QuestionExtended extends React.Component {
 					<div class="d-flex flex-row justify-content-center">
 						<button class="btn btn-outline-primary" data-toggle="modal" data-target="#answerModal">ANSWER</button>
 					</div>
-					<div class="card trending-card mt-5 ml-auto mr-auto">
+					{ /*<div class="card trending-card mt-5 ml-auto mr-auto">
 						<div class="card-header">
 							Related questions
 						</div>
@@ -89,7 +96,7 @@ export default class QuestionExtended extends React.Component {
 					  	  	<div class="badge badge-pill badge-info d-inline ml-auto">CSCI151</div>
 					  	  </a>
 					  	</div>
-					</div>
+					</div> */ }
 				</div>
 				<div class="card question-extended-question mr-auto ml-auto">
 					<div class="card-header d-flex flex-row align-items-center justify-content-end">

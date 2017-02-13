@@ -6,6 +6,7 @@ export default function reducer(state={
 	answerSuccess: false,
 	answerFetching: false,
 	answerFetched: false,
+	answers: null,
 	error: null
 }, action) {
 	switch(action.type) {
@@ -26,6 +27,9 @@ export default function reducer(state={
 		}
 		case answerActions.ANSWER_ADD_FAIL: {
 			return {...state, answerPending: false, answerSuccess: false}
+		}
+		case answerActions.ANSWER_UPDATE: {
+			return {...state, answers: action.answers}
 		}
 	}
 
