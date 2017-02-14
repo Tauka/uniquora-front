@@ -20,9 +20,16 @@ export default class QuestionExtended extends React.Component {
 		this.props.dispatch(getQuestion(this.props.router.params.questionId));
 		//detect url change
 		this.props.router.listen((location) => {
+			console.log("SUKA BLYAT!");
 			this.props.dispatch(getQuestion(this.props.router.params.questionId));
 		});
-	}
+ 	}
+
+ 	componentWillUnmount() {
+ 		this.props.router.listen((location) => {
+ 			return;
+ 		});
+ 	}
 
 	addAnswer() {
 		this.props.dispatch(addAnswer({
@@ -49,7 +56,9 @@ export default class QuestionExtended extends React.Component {
 
 		if (this.props.pending && !this.props.success) {
 			//LOADING
-			return <div> LOADING </div>
+			return <div class="loading d-flex justify-content-center align-items-center">
+						<i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+					</div>;
 		} else if (!this.props.pending && this.props.success) {
 			let answers;
 			if (this.props.answers.answers != null) {

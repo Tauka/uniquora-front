@@ -107,29 +107,58 @@ export default class Feed extends React.Component {
 	}
 
 	//allows conditional rendering
-	// fuckingRendering(props, questions) {
-	// 	if (props.questions.questionsFetchPending) {
-	// 		return <div>LOADING</div>;
-	// 	} else if (props.questions.questionsFetchSuccess) {
+	fuckingRendering() {
+		if (this.props.questions.questionsFetchPending) {
+			return 	<div class="loading d-flex justify-content-center align-items-center">
+						<i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+					</div>;
+		} else if (this.props.questions.questionsFetchSuccess) {
+
+			let questions = this.props.questions.questions.map((questionItem) => { return <QuestionFeed question={ questionItem } />});;
+			let suggestions = this.props.questions.questions.map((questionItem) => { return { title: questionItem.title, id: questionItem.id } });
+			let courses =  this.state.tempCourses.map((course) => { return { title: course, id: 1 } });
 			 
-	// 		return 	<div class="feed-root">
-	// 					<nav class="navbar fixed-top navbar-light flex-row bg-faded justify-content-between">
-	// 					  	<a class="navbar-brand" onClick={this.goToFeed}><b>UNIQUORA</b></a>
-	// 					    <form class="form-inline" style={{flexBasis: "50%"}}>
-	// 					      <input class="form-control" type="text" placeholder="Search" style={{flexGrow: 1}}/>
-	// 					    </form>
-	// 					    <button class="btn btn-outline-warning" onClick={this.logout}>LOGOUT</button>
-	// 					</nav>
-	// 				{ React.cloneElement(this.props.children, { questions: this.props.questions.questions })}				
+			return 	<div class="feed-root" onClick={this.onRootClick}>
+						<nav class="navbar fixed-top navbar-light flex-row bg-faded justify-content-between">
+						  	<a class="navbar-brand" onClick={this.goToFeed}><b>UNIQUORA</b></a>
+						    <form class="form-inline" style={{flexBasis: "50%"}}>
+						      <input class="navbar-input form-control" type="text" placeholder="Search" onChange={this.searchHandleChange} style={{width: "100%"}}/>
+						      { this.autoComplete(suggestions, this.state.searchTypedValue, this.state.searchDropdownRender, (id) => { this.goToQuestionForm(id) }, {width: "49%", top: "2.8rem"}, true) }
+						    </form>
+						    <button class="btn btn-outline-warning" onClick={this.logout}>LOGOUT</button>
+						</nav>
+						{ React.cloneElement(this.props.children, { questions: this.props.questions.questions})}
+						<div class="modal fade" id="myModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						  <div class="modal-dialog" role="document">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <h5 class="modal-title" id="exampleModalLabel">Add new question</h5>
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						          <span aria-hidden="true">&times;</span>
+						        </button>
+						      </div>
+						      <div class="modal-body">
+						      	<div class="form-group">
+						      		<input id="question-title-input" class="form-control" type="text" placeholder="Your question"/>
+						      		<input id="question-course-title" class="form-control mt-2" type="text" onChange={this.courseHandleChange} placeholder="Enter course title"/>
+						      		{ this.autoComplete(courses, this.state.courseValue, this.state.courseDropdownRender, (id, name) => { this.onCourseModalClick(id, name) }, {width: "92%", top: "10.3rem"}, false) }
+						      		<textarea id="question-details-input"class="form-control mt-2" rows="3" type="text" placeholder="Detailed question" style={{resize: "none"}}/>
+						      	</div>
+						      </div>
+						      <div class="modal-footer">
+						        <button type="button" class="btn btn-primary" data-dismiss="modal" onClick={this.addQuestion}>Ask</button>
+						      </div>
+						    </div>
+						  </div>
+						</div>			
+					</div>	
 
-	// 				</div>
 
 
-
-	// 	} else {
-	// 		return props.questions.error != null ? <div> { this.props.questions.error.toString() }</div> : null;
-	// 	}
-	// }
+		} else {
+			return this.props.questions.error != null ? <div> { this.props.questions.error.toString() }</div> : null;
+		}
+	}
 
 	autoComplete(suggestions, typedValue, dropdownRender, onclickFunc, style, questionButton) {
 		if (typedValue != "" && typedValue != null && dropdownRender) {
@@ -138,49 +167,9 @@ export default class Feed extends React.Component {
 	}
 
 	render() {
-		let questions = this.props.questions.questions.map((questionItem) => { return <QuestionFeed question={ questionItem } />});;
-		let suggestions = this.props.questions.questions.map((questionItem) => { return { title: questionItem.title, id: questionItem.id } });
-		let courses =  this.state.tempCourses.map((course) => { return { title: course, id: 1 } });
-		return (
-			 	<div class="feed-root" onClick={this.onRootClick}>
-					<nav class="navbar fixed-top navbar-light flex-row bg-faded justify-content-between">
-					  	<a class="navbar-brand" onClick={this.goToFeed}><b>UNIQUORA</b></a>
-					    <form class="form-inline" style={{flexBasis: "50%"}}>
-					      <input class="navbar-input form-control" type="text" placeholder="Search" onChange={this.searchHandleChange} style={{width: "100%"}}/>
-					      { this.autoComplete(suggestions, this.state.searchTypedValue, this.state.searchDropdownRender, (id) => { this.goToQuestionForm(id) }, {width: "49%", top: "2.8rem"}, true) }
-					    </form>
-					    <button class="btn btn-outline-warning" onClick={this.logout}>LOGOUT</button>
-					</nav>
-
-				{ React.cloneElement(this.props.children, { questions: this.props.questions.questions})}
-
-
-				<div class="modal fade" id="myModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				  <div class="modal-dialog" role="document">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <h5 class="modal-title" id="exampleModalLabel">Add new question</h5>
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				          <span aria-hidden="true">&times;</span>
-				        </button>
-				      </div>
-				      <div class="modal-body">
-				      	<div class="form-group">
-				      		<input id="question-title-input" class="form-control" type="text" placeholder="Your question"/>
-				      		<input id="question-course-title" class="form-control mt-2" type="text" onChange={this.courseHandleChange} placeholder="Enter course title"/>
-				      		{ this.autoComplete(courses, this.state.courseValue, this.state.courseDropdownRender, (id, name) => { this.onCourseModalClick(id, name) }, {width: "92%", top: "10.3rem"}, false) }
-				      		<textarea id="question-details-input"class="form-control mt-2" rows="3" type="text" placeholder="Detailed question" style={{resize: "none"}}/>
-				      	</div>
-				      </div>
-				      <div class="modal-footer">
-				        <button type="button" class="btn btn-primary" data-dismiss="modal" onClick={this.addQuestion}>Ask</button>
-				      </div>
-				    </div>
-				  </div>
-				</div>			
-
-				</div>	
-			// this.fuckingRendering(this.props, questions)
+		
+		return ( 	
+			this.fuckingRendering()
 		);
 	}
 }

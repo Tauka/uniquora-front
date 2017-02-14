@@ -1,5 +1,6 @@
 import React from 'react';
 import QuestionFeed from '../components/questionFeed';
+import '../css/feedMainWrapper.scss';
 
 export default class FeedMainWrapper extends React.Component {
 

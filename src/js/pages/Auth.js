@@ -21,12 +21,15 @@ export default class Auth extends React.Component {
 		}
 	};
 
-	componentWillMount() {
-		
+	componentWillMount() {	
+		if (this.props.user.isAuth) {
+			this.props.router.push('/');
+		}
+
 	}
 
 	componentWillReceiveProps(nextProps) {
-		//this works!
+		// //this works!
 		if (nextProps.user.isAuth) {
 			this.props.router.push('/');
 		}
