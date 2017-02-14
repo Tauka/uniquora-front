@@ -9,3 +9,4 @@ npm-debug.log
 *.ttf
 *.woff
 index.min.js
+**/.DS_Store
