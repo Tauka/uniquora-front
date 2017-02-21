@@ -15,7 +15,7 @@ export default class FeedMainWrapper extends React.Component {
 					</div>
 					<div class="card-block">
 					  	<div class="user d-flex flex-row">
-					  		<img class="user-image d-inline-block" src={`http://${API_ROOT}/api/avatar/${this.props.user.id}.png`} style={{borderRadius: "0"}}/>
+					  		<img class="user-image d-inline-block" src={`http://${API_ROOT}/api/avatar/${this.props.user.id}`} style={{borderRadius: "0"}}/>
 					  		<div class="user-info d-inline-block ml-2 d-flex flex-column justify-content-around">
 					  			<div class="user-info-stats">
 					  				<i class="fa fa-star fa-lg d-inline-block" aria-hidden="true"/>
