@@ -219,6 +219,7 @@ export default class Feed extends React.Component {
 							      <input class="navbar-input form-control" value={this.state.searchTypedValue} type="text" placeholder="Search" onChange={this.searchHandleChange} style={{width: "100%"}}/>
 							      { this.autoComplete(suggestions, this.state.searchTypedValue, this.state.searchDropdownRender, (id) => { this.goToQuestionForm(id) }, {width: "49%", top: "2.8rem"}, () => {
 							      		$("#question-add-modal").modal('show');
+							      		$("#question-title-input").val(this.state.searchTypedValue);
 							      }) }
 							    </form>
 							    <button class="btn btn-outline-warning" onClick={this.logout}>LOGOUT</button>

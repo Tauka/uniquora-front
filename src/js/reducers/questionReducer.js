@@ -64,6 +64,19 @@ export default function reducer(state={
 		case questionActions.COURSES_GET_FAIL: {
 			return {...state, coursesGetPending: false, coursesGetSuccess: false, error: action.payload}
 		}
+		case questionActions.UPDATE_LATEST_ANSWER: {
+
+			let questions = [...state.questions];
+
+			for (let i = 0;i < questions.length; i++) {
+				if (questions[i].id == action.questionId) {
+					questions[i]["latestAnswer"] = action.answer;
+					break;
+				}
+			}
+
+			return {...state, questions: questions}
+		}
 	}
 
 	return state;

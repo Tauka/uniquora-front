@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getQuestion } from "./questionActions";
+import { getQuestion, updateLatestAnswer } from "./questionActions";
 export const answerActions = {
 	ANSWER_FETCH_PENDING: "ANSWER_FETCH_PENDING",
 	ANSWER_FETCH_SUCCESS: "ANSWER_FETCH_SUCCESS",
@@ -41,6 +41,7 @@ export function addAnswer(answer) {
 		.then((response) => {
 			console.log(response.data);
 			dispatch({type: answerActions.ANSWER_ADD_SUCCESS, newAnswer: response.data});
+			dispatch(updateLatestAnswer(answer.questionId, response.data));
 			// dispatch(getQuestion(answer.questionId));
 
 		})
