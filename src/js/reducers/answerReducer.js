@@ -23,7 +23,12 @@ export default function reducer(state={
 			return {...state, answerPending: true}
 		}
 		case answerActions.ANSWER_ADD_SUCCESS: {
-			return {...state, answerPending: false, answerSuccess: true}
+
+			// state.answers[`${action.newAnswer.id}`] = action.newAnswer;
+			let newAnswers = Object.assign({}, state.answers);
+			newAnswers[`${action.newAnswer.id}`] = action.newAnswer;
+
+			return {...state, answerPending: false, answerSuccess: true, answers: newAnswers}
 		}
 		case answerActions.ANSWER_ADD_FAIL: {
 			return {...state, answerPending: false, answerSuccess: false}

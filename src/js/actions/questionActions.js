@@ -6,26 +6,34 @@ import { normalize, schema } from 'normalizr';
 export const questionActions = {
 	QUESTIONS_FETCH_PENDING: "QUESTIONS_FETCH_PENDING",
 	QUESTIONS_FETCH_SUCCESS: "QUESTIONS_FETCH_SUCCESS",
+	QUESTIONS_FETCH_EMPTY: "QUESTIONS_FETCH_EMPTY",
 	QUESTIONS_FETCH_FAIL: "QUESTIONS_FETCH_FAIL",
 	QUESTION_GET_SUCCESS: "QUESTION_GET_SUCCESS",
 	QUESTION_GET_PENDING: "QUESTION_GET_PENDING",
 	QUESTION_GET_FAIL: "QUESTION_GET_FAIL",
 	QUESTION_ADD_PENDING: "QUESTION_ADD_PENDING",
 	QUESTION_ADD_SUCCESS: "QUESTION_ADD_SUCCESS",
-	QUESTION_ADD_FAIL: "QUESTION_ADD_FAIL"
+	QUESTION_ADD_FAIL: "QUESTION_ADD_FAIL",
+	COURSES_GET_PENDING: "COURSES_GET_PENDING",
+	COURSES_GET_SUCCESS: "COURSES_GET_SUCCESS",
+	COURSES_GET_FAIL: "COURSES_GET_FAIL"
 }
 //!!!DUMMY QUESTIONS URL
 
 
-export function fetchQuestions() {
+export function fetchQuestions(page) {
 	return function(dispatch, getState) {
 		dispatch({type: questionActions.QUESTIONS_FETCH_PENDING});
-		axios.get(`http://${API_ROOT}/api/questions/list`, {
+		axios.get(`http://${API_ROOT}/api/questions/list?page=${page}`, {
 			headers: {'JWT': getState().users.token}
 		})
 		.then((response) => {				
 			//if registration is successful tell it to reducer and authorize user
-			dispatch({type: questionActions.QUESTIONS_FETCH_SUCCESS, payload: response.data});
+			if (response.data.count > 0) {
+				dispatch({type: questionActions.QUESTIONS_FETCH_SUCCESS, payload: response.data});
+			} else {
+				dispatch({type: questionActions.QUESTIONS_FETCH_EMPTY})
+			}
 		})
 		.catch((err) => {
 			if (err.response != undefined && err.response.data == "login") {
@@ -77,6 +85,25 @@ export function getQuestion(questionId) {
 	}
 }
 
+export function fetchCourses() {
+	return function(dispatch, getState) {
+		dispatch({type: questionActions.COURSES_GET_PENDING});
+		axios.get(`http://${API_ROOT}/api/courses/list`, {
+			headers: {'JWT': getState().users.token}
+		})
+		.then((response) => {				
+			dispatch({type: questionActions.COURSES_GET_SUCCESS, courses: response.data});
+
+		})
+		.catch((err) => {
+			dispatch({
+				type: questionActions.COURSES_GET_FAIL,
+				payload: err
+			});
+		});
+	}
+}
+
 export function addQuestion(question) {
 	return function(dispatch, getState) {
 		dispatch({type: questionActions.QUESTION_ADD_PENDING, payload: question});
@@ -94,8 +121,8 @@ export function addQuestion(question) {
 			}
 		})
 		.then((response) => {
-			dispatch({type: questionActions.QUESTION_ADD_SUCCESS, payload: response.user});
-			dispatch(fetchQuestions());
+			console.log(response.data);
+			dispatch({type: questionActions.QUESTION_ADD_SUCCESS, newQuestion: response.data});
 
 		})
 		.catch((err) => {

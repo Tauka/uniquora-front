@@ -8,6 +8,9 @@ export const userActions = {
 	USER_AUTHORIZE_PENDING: "USER_AUTHORIZE_PENDING",
 	USER_AUTHORIZE_SUCCESS: "USER_AUTHORIZE_SUCCESS",
 	USER_AUTHORIZE_FAIL: "USER_AUTHORIZE_FAIL",
+	USER_GET_INFO_PENDING: "USER_GET_INFO_PENDING",
+	USER_GET_INFO_SUCCESS: "USER_GET_INFO_SUCCESS",
+	USER_GET_INFO_FAIL: "USER_GET_INFO_FAIL",
 	UNAUTHORIZED_REQUEST: "UNAUTHORIZED_REQUEST",
 	USER_LOGOUT_SUCCESS: "USER_LOGOUT_SUCCESS",
 	USER_EXIST_PENDING: "USER_EXIST_PENDING",
@@ -60,6 +63,25 @@ export function authorizeUser(user) {
 		.catch((err) => {
 			dispatch({
 				type: userActions.USER_AUTHORIZE_FAIL,
+				payload: err
+			});
+		});
+	}
+}
+
+export function getUserInfo() {
+	return function(dispatch, getState) {
+		dispatch({type: userActions.USER_GET_INFO_PENDING});
+		axios.get(`http://${API_ROOT}/api/whoami`, {
+			headers: {'JWT': getState().users.token}
+		})
+		.then((response) => {
+			dispatch({type: userActions.USER_GET_INFO_SUCCESS, user: response.data});
+
+		})
+		.catch((err) => {
+			dispatch({
+				type: userActions.USER_GET_INFO_FAIL,
 				payload: err
 			});
 		});

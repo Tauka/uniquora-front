@@ -158,7 +158,7 @@ export default class Auth extends React.Component {
 		return (
 			
 			<div class="auth-block">
-				<h1 class="header display-1">UNIQUORA</h1>
+				<h1 class="header display-1">uniquora</h1>
 				<div class="user-exist-message">
 					{userExistMessage}
 					{loading}
@@ -166,7 +166,7 @@ export default class Auth extends React.Component {
 			  	<div class="fields d-flex flex-column">
 				    <div class="input-group">
 				    	<span class="input-group-addon auth-input-addon" id="basic-addon1"><i class="fa fa-envelope fa-lg"></i></span>
-				    	<input type="text" class="form-control auth-login" placeholder="tauyekel.kunzhol@nu.edu.kz" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
+				    	<input type="text" class="form-control auth-login" placeholder="name.lastname@nu.edu.kz" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
 				    </div>
 				    {authPassword}
 				    {authPasswordConfirm}

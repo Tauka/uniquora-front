@@ -39,9 +39,9 @@ export function addAnswer(answer) {
 			headers: {'JWT': getState().users.token}
 		})
 		.then((response) => {
-			// console.log(response.data);
-			dispatch({type: answerActions.ANSWER_ADD_SUCCESS, payload: response.data, newAnswer: answer});
-			dispatch(getQuestion(answer.questionId));
+			console.log(response.data);
+			dispatch({type: answerActions.ANSWER_ADD_SUCCESS, newAnswer: response.data});
+			// dispatch(getQuestion(answer.questionId));
 
 		})
 		.catch((err) => {

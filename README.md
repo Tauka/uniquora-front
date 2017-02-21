@@ -11,15 +11,11 @@ This is front-end part of UNIQUORA project developed by Sagynysh Baitursynov and
 3. `npm run build` for build purposes
 
 ###TODO
-* Adding sorting
 * Adding tagging
 * Upvotes
 * Commenting answer
 * Best answer
 * Personal page of user
-
-###REFACTOR
-* Too much render calls
 
 ###DONE
 * Integrating API

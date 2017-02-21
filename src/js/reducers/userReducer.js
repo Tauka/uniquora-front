@@ -6,6 +6,8 @@ export default function reducer(state={
 	registerPending: false,
 	registerSuccess: false,
 	authorizePending: false,
+	userInfoPending: false,
+	userInfoSuccess: false,
 	logoutPending: false,
 	isAuth: true,
 	token: localStorage.getItem("token"),
@@ -28,12 +30,22 @@ export default function reducer(state={
 		}
 		case userActions.USER_AUTHORIZE_SUCCESS: {
 			localStorage.setItem("token", action.token);
-			console.log("in fucking reducer");
-			return {...state, authorizePending: false, isAuth: true, authorizedUser: action.payload, token: action.token}
+			console.log(action.payload);
+			return {...state, authorizePending: false, isAuth: true, token: action.token}
 		}
 		case userActions.USER_AUTHORIZE_FAIL: {
 			return {...state, authorizePending: false, isAuth: false, error: action.payload}
 		}
+		case userActions.USER_GET_INFO_PENDING: {
+			return {...state, userInfoPending: true, userInfoSuccess: false}
+		}
+		case userActions.USER_GET_INFO_SUCCESS: {
+			return {...state, userInfoPending: false, userInfoSuccess: true, authorizedUser: action.user}
+		}
+		case userActions.USER_GET_INFO_FAIL: {
+			return {...state, userInfoPending: false, userInfoSuccess: false}
+		}
+
 		// case userActions.USER_LOGOUT_PENDING: {
 		// 	return {...state, logoutPending: true}
 		// }

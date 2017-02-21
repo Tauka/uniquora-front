@@ -5,6 +5,8 @@ import { fetchAnswers, addAnswer } from '../actions/answerActions';
 import { getQuestion } from '../actions/questionActions';
 import '../css/questionExtended.scss';
 
+let unlisten = null;
+
 @connect((store) => {
 	return {
 		answers: store.answers,
@@ -15,42 +17,73 @@ import '../css/questionExtended.scss';
 	};
 })
 export default class QuestionExtended extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			modalListener: false
+		}
+	}
 	
 	componentWillMount() {
 		this.props.dispatch(getQuestion(this.props.router.params.questionId));
+		//detect refresh
+
 		//detect url change
-		this.props.router.listen((location) => {
-			console.log("SUKA BLYAT!");
-			this.props.dispatch(getQuestion(this.props.router.params.questionId));
+		unlisten = this.props.router.listen((location) => {
+			if (this.props.router.params.questionId != undefined) {
+				this.props.dispatch(getQuestion(this.props.router.params.questionId));
+			}
 		});
  	}
 
+ 	componentDidUpdate() {
+ 		if ($('#answerModal')[0] != undefined && !this.state.modalListener) {
+ 			$('#answerModal').on('hide.bs.modal', function (e) {
+ 				//undanger them
+ 				$("#answer-form-group").removeClass("has-danger");
+
+ 				//empty them
+ 				$("#add-answer").val("");
+
+ 			});
+
+ 			//removing danger at focus
+ 			$('#add-answer').on('focus', function(e) {
+ 				$("#answer-form-group").removeClass("has-danger");
+ 			});
+
+ 			this.setState({
+ 				modalListener: true
+ 			});
+ 		}
+ 		//init tooltips
+ 		$('[data-toggle="tooltip"]').tooltip()
+
+ 	}
  	componentWillUnmount() {
- 		this.props.router.listen((location) => {
- 			return;
- 		});
+
+ 		$('[data-toggle="tooltip"]').tooltip()
+ 		
+ 		if (unlisten != null) {
+ 			unlisten();
+ 		}
  	}
 
 	addAnswer() {
+		if ($("#add-answer").val() == "") {
+			$("#answer-form-group").addClass("has-danger");
+			return;
+		}
+
+
 		this.props.dispatch(addAnswer({
 			text: $("#add-answer").val(),
 			questionId: this.props.router.params.questionId
 		}));
+
+		$("#answerModal").modal('hide');
 	}
 
-	mainRender() {
-		
-		return 
-	}
-
-	loadingRender() {
-		return 
-	}
-
-	errorRender(err) {
-		console.log("ERROR RENDER!");
-		
-	}
 
 	trueRender() {
 
@@ -72,6 +105,14 @@ export default class QuestionExtended extends React.Component {
 
 				answers = answersArray.map((answer) => { return <AnswerExtended answer={answer}/> });
 			}
+
+			//calculating date
+			let date = new Date(this.props.questionExtended.createdDate);
+			let hours = date.getHours();
+			let minutes = date.getMinutes();
+			let day = date.getDate();
+			let month = date.getMonth();
+			let year = date.getFullYear();
 
 			//MAIN
 			return <div class="question-extended-wrapper">
@@ -112,20 +153,20 @@ export default class QuestionExtended extends React.Component {
 						<div class="question-title mr-auto">{ this.props.questionExtended.title }</div>
 						<div class="datetime d-flex flex-row align-items-center">
 							<i class="fa fa-clock-o mr-2"/>
-							<div class="time mr-2">15:36</div>
+							<div class="time mr-2">{hours}:{minutes}</div>
 							<i class="fa fa-calendar-o mr-2"/>
-							<div class="date mr-2">22.10.2016</div>
+							<div class="date mr-2">{day}.{month}.{year}</div>
 						</div>
-						<div class="badge badge-pill badge-info d-inline">CSCI151</div>
+						<div class="badge badge-pill badge-info d-inline" data-toggle="tooltip" data-placement="top" title={`${this.props.questionExtended.course.COURSETITLE}`}>{this.props.questionExtended.course.COURSECODE}</div>
 					</div>
 				  <div class="card-block">
 				    <p class="card-text">{ this.props.questionExtended.text }</p>
-				      <div class="tags">
+				      {/*<div class="tags">
 				      	<span class="badge badge-pill badge-default mr-2">programming</span>
 				      	<span class="badge badge-pill badge-default mr-2">unity</span>
 				      	<span class="badge badge-pill badge-default mr-2">c#</span>
 				      	<span class="badge badge-pill badge-default mr-2">literature</span>
-				      </div>
+				      </div>*/}
 				    </div>
 				  </div>
 				  { answers }
@@ -141,12 +182,12 @@ export default class QuestionExtended extends React.Component {
 				        </button>
 				      </div>
 				      <div class="modal-body">
-				      	<div class="form-group">
+				      	<div id="answer-form-group" class="form-group">
 				      		<textarea id="add-answer" class="form-control mt-2" rows="5" type="text" placeholder="Your answer" style={{resize: "none"}}/>
 				      	</div>
 				      </div>
 				      <div class="modal-footer">
-				        <button type="button" data-dismiss="modal" onClick={this.addAnswer.bind(this)} class="btn btn-primary">Answer</button>
+				        <button type="button" onClick={this.addAnswer.bind(this)} class="btn btn-primary">Answer</button>
 				      </div>
 				    </div>
 				  </div>
@@ -160,7 +201,7 @@ export default class QuestionExtended extends React.Component {
 
 	render() {
 
-		console.log(this.props.pending);
+		// console.log(this.props.pending);
 
 		return (
 			this.trueRender()
