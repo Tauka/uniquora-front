@@ -37,7 +37,7 @@ module.exports = {
     ]
   },
   output: {
-    path: __dirname + "/build/",
+    path: __dirname + "/uniquora",
     filename: "index.min.js"
   },
   plugins: [

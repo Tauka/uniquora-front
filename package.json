@@ -42,7 +42,7 @@
   },
   "scripts": {
     "dev": "webpack-dev-server --content-base src --inline --hot --history-api-fallback",
-    "build": "NODE_ENV=production webpack --config webpack.production.config.js -p"
+    "build": "NODE_ENV=production webpack --config webpack.production.config.js -p && cp src/index.html uniquora/index.html"
   },
   "author": "",
   "license": "ISC"
