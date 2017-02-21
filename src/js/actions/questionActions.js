@@ -16,7 +16,8 @@ export const questionActions = {
 	QUESTION_ADD_FAIL: "QUESTION_ADD_FAIL",
 	COURSES_GET_PENDING: "COURSES_GET_PENDING",
 	COURSES_GET_SUCCESS: "COURSES_GET_SUCCESS",
-	COURSES_GET_FAIL: "COURSES_GET_FAIL"
+	COURSES_GET_FAIL: "COURSES_GET_FAIL",
+	UPDATE_LATEST_ANSWER: "UPDATE_LATEST_ANSWER"
 }
 //!!!DUMMY QUESTIONS URL
 
@@ -101,6 +102,14 @@ export function fetchCourses() {
 				payload: err
 			});
 		});
+	}
+}
+
+export function updateLatestAnswer(questionId, answer) {
+	return {
+		type: questionActions.UPDATE_LATEST_ANSWER,
+		answer: answer,
+		questionId: questionId
 	}
 }
 
