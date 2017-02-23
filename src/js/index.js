@@ -8,7 +8,6 @@ import $ from "jquery";
 import Tether from "tether";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap';
-import './css/font-awesome/font-awesome.min.css';
 import './css/global.scss';
 
 

@@ -1,11 +1,17 @@
 .autocomplete {
 	position: fixed;
 
+
 	.li {
 		border: none !important;
 	}
 
 	border: none !important;
+}
+
+//mozilla specific
+body:last-child .autocomplete, x:-moz-any-link {
+	left: 26%;
 }
 
 .add-question {
