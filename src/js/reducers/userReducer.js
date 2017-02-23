@@ -13,6 +13,7 @@ export default function reducer(state={
 	token: localStorage.getItem("token"),
 	userExistPending: false,
 	userExistSuccess: null,
+	userEmailConfirm: false,
 	error: null	
 }, action) {
 	switch(action.type) {
@@ -20,7 +21,7 @@ export default function reducer(state={
 			return {...state, registerPending: true}
 		}
 		case userActions.USER_REGISTER_SUCCESS: {
-			return {...state, registerPending: false, registerSuccess: true}
+			return {...state, registerPending: false, registerSuccess: true, userExistPending: false, userExistSuccess: null, userEmailConfirm: true}
 		}
 		case userActions.USER_REGISTER_FAIL: {
 			return {...state, registerPending: false, registerSuccess: false, error: action.payload}
@@ -61,13 +62,13 @@ export default function reducer(state={
 			return {...state, isAuth: false, token: ""}
 		}
 		case userActions.USER_EXIST_PENDING: {
-			return {...state, userExistPending: true}
+			return {...state, userExistPending: true, userEmailConfirm: false}
 		}
 		case userActions.USER_EXIST_SUCCESS: {
-			return {...state, userExistSuccess: true, userExistPending: false}
+			return {...state, userExistSuccess: true, userExistPending: false, userEmailConfirm: false}
 		}
 		case userActions.USER_EXIST_RESET: {
-			return {...state, userExistSuccess: null}
+			return {...state, userExistSuccess: null, userEmailConfirm: false}
 		}
 		case userActions.USER_EXIST_NOTSUCCESS: {
 			return {...state, userExistSuccess: false, userExistPending: false}

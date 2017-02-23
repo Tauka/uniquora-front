@@ -82,6 +82,7 @@ export default class FeedMain extends React.Component {
 	}
 
 	goToQuestionForm(questionId) {
+
 		this.props.router.push(`/question/${questionId}`);
 		$('[data-toggle="tooltip"]').tooltip('hide');
 	}
@@ -233,8 +234,8 @@ export default class FeedMain extends React.Component {
 					<div class="filter" style={{flexBasis: "50%"}}>
 						<div class="filter-title"> Filters </div>
 						<div class="form-group mr-auto ml-auto">
-				    		<input type="text" class="form-control" value={this.state.typedValue} id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter course name or tag" onChange={this.handleChange}/>
-				    		{ this.autoComplete(courses, this.state.typedValue, this.state.dropdownRender, (id, name, code) => { this.onTagClick(id, name, code)}, {width: "21%", top: "13rem"}, false) }
+				    		<input type="text" class="form-control" value={this.state.typedValue} autocomplete="off" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter course name or tag" onChange={this.handleChange}/>
+				    		{ this.autoComplete(courses, this.state.typedValue, this.state.dropdownRender, (id, name, code) => { this.onTagClick(id, name, code)}, {width: "18%", top: "13rem"}, false) }
 				  		</div>
 				  		<div class="tags-field d-flex flex-column align-items-center">
 				  			{ tagsRender }

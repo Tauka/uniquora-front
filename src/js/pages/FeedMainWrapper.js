@@ -9,7 +9,7 @@ export default class FeedMainWrapper extends React.Component {
 			<div class="feed-main d-flex flex-row justify-content-center">
 				{ React.cloneElement(this.props.children, { questions: this.props.questions, fetchQuestions: this.props.fetchQuestions, loadedPage: this.props.loadedPage, questionsEmpty: this.props.questionsEmpty, courses: this.props.courses, rootel: this.props.rootel })}
 				<div class="right-content">
-				<div class="card user-card m-auto">
+				<div class="card user-card">
 					<div class="card-header">
  						{this.props.user.name}
 					</div>

@@ -258,16 +258,18 @@ export default class Feed extends React.Component {
 			let courses =  this.props.questions.courses.map((course) => { return { title: course.COURSETITLE, id: course.id } });
 			 			 
 			render = <div class="feed-root" onClick={this.onRootClick} >
-							<nav id="header" class="navbar fixed-top navbar-light flex-row bg-faded justify-content-between">
-							  	<a class="navbar-brand" onClick={this.goToFeed}><b>UNIQUORA</b></a>
-							    <form id="search-input-form" class="form-inline" style={{flexBasis: "30%"}}>
-							      <input id="search-input-field" class="navbar-input form-control" value={this.state.searchTypedValue} type="text" placeholder="Ask or search" onChange={this.searchHandleChange} style={{width: "100%"}}/>
-							      { this.autoComplete(suggestions, this.state.searchTypedValue, this.state.searchDropdownRender, (id) => { this.goToQuestionForm(id) }, {width: "49%", top: "2.8rem"}, () => {
-							      		$("#question-add-modal").modal('show');
-							      		$("#question-title-input").val(this.state.searchTypedValue);
-							      }) }
-							    </form>
-							    <button class="btn btn-outline-warning" onClick={this.logout}>LOGOUT</button>
+							<nav id="header" class="navbar fixed-top navbar-light flex-row bg-faded justify-content-center">
+								<div class="navbar-wrapper d-flex flex-row justify-content-between">
+								  	<a class="navbar-brand" onClick={this.goToFeed}><b>UNIQUORA</b></a>
+								    <form id="search-input-form" class="form-inline" style={{flexBasis: "30%"}}>
+								      <input id="search-input-field" class="navbar-input form-control" value={this.state.searchTypedValue} type="text" placeholder="Ask or search" onChange={this.searchHandleChange} style={{width: "100%"}}/>
+								      { this.autoComplete(suggestions, this.state.searchTypedValue, this.state.searchDropdownRender, (id) => { this.goToQuestionForm(id) }, {width: "44%", top: "2.8rem"}, () => {
+								      		$("#question-add-modal").modal('show');
+								      		$("#question-title-input").val(this.state.searchTypedValue);
+								      }) }
+								    </form>
+								    <button class="btn btn-outline-warning" onClick={this.logout}>LOGOUT</button>
+							    </div>
 							</nav>
 							{ React.cloneElement(this.props.children, { questions: this.props.questions.questions, fetchQuestions: this.props.questionActions.fetchQuestions, loadedPage: this.props.questions.loadedPage, questionsEmpty: this.props.questions.questionsEmpty, user: this.props.users.authorizedUser, courses: this.props.questions.courses})}
 							<div class="modal fade" id="question-add-modal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -281,10 +283,10 @@ export default class Feed extends React.Component {
 							      </div>
 							      <div class="modal-body">
 							      	<div id="question-form-group-title" class="form-group">
-							      		<input id="question-title-input" tabindex="1" class="form-control" type="text" placeholder="Your question"/>
+							      		<input id="question-title-input" tabindex="1" class="form-control" autocomplete="off" type="text" placeholder="Your question"/>
 							      	</div>
 							      	<div id="question-form-group-course" class="form-group">
-							      		<input id="question-course-input" class="form-control mt-2" value={this.state.courseValue} type="text" onChange={this.courseHandleChange} placeholder="Enter course title"/>
+							      		<input id="question-course-input" class="form-control mt-2" value={this.state.courseValue} type="text" autocomplete="off" onChange={this.courseHandleChange} placeholder="Enter course title"/>
 							      		{ this.autoComplete(courses, this.state.courseValue, this.state.courseDropdownRender, (id, name) => { this.onCourseModalClick(id, name) }, {width: "92%", top: "10.3rem"}, null) }
 							      	</div>
 							      	<div id="question-form-group-text" class="form-group">

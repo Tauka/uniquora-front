@@ -54,11 +54,14 @@ export default class Auth extends React.Component {
 
 		if (event.target.className.includes('auth-login')) {
 			authLogin = event.target.value;
-		} else if (event.target.className.includes('auth-password')) {
+		} else if (event.target.className.includes('auth-password-pass')) {
 			authPassword = event.target.value;
-		} else {
+		} else if (event.target.className.includes('auth-password-confirm')){
 			authPasswordConfirm = event.target.value;
 		}
+
+		console.log("PASSWORD: " + authPassword);
+		console.log("CONFIRM: " + authPasswordConfirm);
 
 		this.validateNUemail(authLogin);
 		this.validatePassword(authLogin, authPassword, authPasswordConfirm);
@@ -75,6 +78,18 @@ export default class Auth extends React.Component {
 		this.setState({
 			authPasswordConfirm: authPasswordConfirm
 		});
+
+		if (this.props.user.userExistSuccess == null) {
+			this.setState({
+				authPassword: ""
+			});
+		}
+
+		if (this.props.user.userExistSuccess == null || !this.props.user.userExistSuccess) {
+			this.setState({
+				authPasswordConfirm: ""
+			});
+		}
 
 	  }
 
@@ -104,8 +119,10 @@ export default class Auth extends React.Component {
 	 }
 
 	 validatePassword(authLogin, authPassword, authPasswordConfirm) {
-	 	if (this.state.authPassword.length >= 8 && (authPassword == authPasswordConfirm) && (authPassword != "")) {
+
+	 	if (authPassword.length >= 8 && (authPassword === authPasswordConfirm) && (authPassword != "")) {
 	 		//register
+	 		console.log("IN VALIDATE");
 	 		console.log("REGISTER");
 	 		this.props.dispatch(registerUser({
 	 			email: authLogin,
@@ -128,6 +145,7 @@ export default class Auth extends React.Component {
 		let authPassword;
 		let authPasswordConfirm;
 		let loading;
+		let confirmail;
 
 		//userExistSuccess == null => response has not been sent; true or false => response has been sent
 		if (this.props.user.userExistSuccess != null) {
@@ -145,13 +163,20 @@ export default class Auth extends React.Component {
 			authPassword = 
 			<div class="input-group mt-3 mb-3">
 				<span class="input-group-addon auth-input-addon" id="basic-addon1"><i class="fa fa-unlock-alt fa-lg"></i></span>
-				<input type="password" class="form-control auth-password" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
+				<input type="password" class="form-control auth-password-pass" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
 			</div>
 		}
 
 
 		loading = this.props.user.userExistPending ? <h5 class="user-exist-loading"> LOADING </h5> : null;
 
+		if (this.props.user.userEmailConfirm ) {
+			confirmail = <h5 class="user-exist-loading"> CHECK YOUR EMAIL </h5>;
+			userExistMessage = null;
+		} else {
+			confirmail = null;
+		}
+		
 		
 
 
@@ -162,6 +187,7 @@ export default class Auth extends React.Component {
 				<div class="user-exist-message">
 					{userExistMessage}
 					{loading}
+					{confirmail}
 				</div>
 			  	<div class="fields d-flex flex-column">
 				    <div class="input-group">
