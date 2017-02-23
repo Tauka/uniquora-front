@@ -61,9 +61,6 @@ export default class QuestionExtended extends React.Component {
 
  	}
  	componentWillUnmount() {
-
- 		$('[data-toggle="tooltip"]').tooltip()
- 		
  		if (unlisten != null) {
  			unlisten();
  		}
@@ -83,7 +80,6 @@ export default class QuestionExtended extends React.Component {
 
 		$("#answerModal").modal('hide');
 	}
-
 
 	trueRender() {
 

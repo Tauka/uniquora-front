@@ -37,6 +37,7 @@ export default class Feed extends React.Component {
 		      courseValue: "",
 		      courseValueToRequest: null,
 		      modalListener: false,
+		      searchInputListener: false	
 
 		};
 	}
@@ -45,6 +46,24 @@ export default class Feed extends React.Component {
 		this.props.userActions.getUserInfo();
 		this.props.questionActions.fetchCourses();
 		this.props.questionActions.fetchQuestions(1);
+
+		//adding cool shadow effect on header
+		$(window).scroll(function() {     
+		    var scroll = $(window).scrollTop();
+		    if (scroll > 0) {
+		        $("#header").addClass("active");
+		    }
+		    else {
+		        $("#header").removeClass("active");
+		    }
+		});
+	}
+
+	componentDidMount() {
+	}
+
+	componentWillUnmount() {
+		$(window).off("scroll");
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -93,6 +112,32 @@ export default class Feed extends React.Component {
 
 			this.setState({
 				modalListener: true
+			});
+		}
+
+		if ($('#search-input-form')[0] != undefined && !this.state.searchInputListener) {
+			$('#search-input-field').focus(() => {
+				$('#search-input-form').animate({
+					flexBasis: "50%"
+				}, 200);
+			});
+
+			$('#search-input-field').blur(() => {
+				$('#search-input-form').animate({
+					flexBasis: "30%"
+				}, 200);
+			});
+
+			$('#search-input-field').keypress((e) => {
+				if (e.keyCode == 13) {
+					$("#question-add-modal").modal('show');
+					$("#question-title-input").val(this.state.searchTypedValue);
+				}
+			});
+			
+
+			this.setState({
+				searchInputListener: true
 			});
 		}
 	}
@@ -212,11 +257,11 @@ export default class Feed extends React.Component {
 			let suggestions = this.props.questions.questions.map((questionItem) => { return { title: questionItem.title, id: questionItem.id } });
 			let courses =  this.props.questions.courses.map((course) => { return { title: course.COURSETITLE, id: course.id } });
 			 			 
-			render = <div class="feed-root" ref={ (rootel) => {this.rootel = rootel} } onClick={this.onRootClick} >
-							<nav class="navbar fixed-top navbar-light flex-row bg-faded justify-content-between">
+			render = <div class="feed-root" onClick={this.onRootClick} >
+							<nav id="header" class="navbar fixed-top navbar-light flex-row bg-faded justify-content-between">
 							  	<a class="navbar-brand" onClick={this.goToFeed}><b>UNIQUORA</b></a>
-							    <form class="form-inline" style={{flexBasis: "50%"}}>
-							      <input class="navbar-input form-control" value={this.state.searchTypedValue} type="text" placeholder="Search" onChange={this.searchHandleChange} style={{width: "100%"}}/>
+							    <form id="search-input-form" class="form-inline" style={{flexBasis: "30%"}}>
+							      <input id="search-input-field" class="navbar-input form-control" value={this.state.searchTypedValue} type="text" placeholder="Ask or search" onChange={this.searchHandleChange} style={{width: "100%"}}/>
 							      { this.autoComplete(suggestions, this.state.searchTypedValue, this.state.searchDropdownRender, (id) => { this.goToQuestionForm(id) }, {width: "49%", top: "2.8rem"}, () => {
 							      		$("#question-add-modal").modal('show');
 							      		$("#question-title-input").val(this.state.searchTypedValue);
@@ -224,7 +269,7 @@ export default class Feed extends React.Component {
 							    </form>
 							    <button class="btn btn-outline-warning" onClick={this.logout}>LOGOUT</button>
 							</nav>
-							{ React.cloneElement(this.props.children, { questions: this.props.questions.questions, fetchQuestions: this.props.questionActions.fetchQuestions, loadedPage: this.props.questions.loadedPage, questionsEmpty: this.props.questions.questionsEmpty, user: this.props.users.authorizedUser, courses: this.props.questions.courses, rootel: this.rootel})}
+							{ React.cloneElement(this.props.children, { questions: this.props.questions.questions, fetchQuestions: this.props.questionActions.fetchQuestions, loadedPage: this.props.questions.loadedPage, questionsEmpty: this.props.questions.questionsEmpty, user: this.props.users.authorizedUser, courses: this.props.questions.courses})}
 							<div class="modal fade" id="question-add-modal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 							  <div class="modal-dialog" role="document">
 							    <div class="modal-content">

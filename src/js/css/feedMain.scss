@@ -39,8 +39,25 @@
 		height: 50%;
 	}
 
-	.sort:hover {
-		background-color: #e9ecef;
+	.up-area {
+		position: fixed;
+		left: 0;
+		top: 0;
+		height: 100%;
+		width: 10%;
+		background-color: transparent;
+
+		#up {
+			display: none;
+		}
+	}
+
+	.up-area:hover {
+		background-color: rgba(233, 236, 239, 0.33);
+
+		#up {
+			display: inline;
+		}
 	}
 }
 

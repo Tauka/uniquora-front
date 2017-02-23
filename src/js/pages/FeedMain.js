@@ -27,21 +27,21 @@ export default class FeedMain extends React.Component {
 		}
 	}
 
+	componentWillMount() {
+		
+	}
+
 	componentDidMount() {
 		window.addEventListener('scroll', this.handleScroll);
-		// $(".feed-root").click(this.onRootClick);
-		// this.props.
+		$('[data-toggle="tooltip"]').tooltip();
 	}
 
 	componentWillReceiveProps(nextProps) {
-		// nextProps.rootel.addEventListener('click', this.onRootClick);
 	}
 
 	componentDidUpdate() {
-		//init tooltips
-		$(function () {
-		  $('[data-toggle="tooltip"]').tooltip()
-		});
+		//for lazy loaded ones
+		$('[data-toggle="tooltip"]').tooltip();
 	}
 
 	componentWillUnmount() {
@@ -172,8 +172,7 @@ export default class FeedMain extends React.Component {
 
 		//filtering
 		let { tags } = this.state;
-		let questionsFiltered;
-
+		let questionsFiltered;   
 		if (tags.length > 0) {
 			questionsFiltered = questionsSorted.filter((question) => {
 				for (let i = 0; i < tags.length; i++) {
@@ -196,7 +195,7 @@ export default class FeedMain extends React.Component {
 		});
 
 		let tagsRender = this.state.tags.map((tag) => {
-			return <span class="badge badge-pill badge-primary mt-2" data-toggle="tooltip" data-placement="top" title={`${tag.name}`} onClick={() => {this.removeTag(tag)}}>{ tag.code }</span>
+			return <span class="badge badge-pill badge-primary mt-2" key={tag.id} data-toggle="tooltip" data-placement="top" title={`${tag.name}`} onClick={() => {this.removeTag(tag)}}>{ tag.code }</span>
 		})
 
 		//loading spinner for lazy load
@@ -225,7 +224,12 @@ export default class FeedMain extends React.Component {
 
 		return (
 			<div style={{flexBasis: "40%"}}>
+				
 				<div class="left-content" onClick={this.onRootClick}>
+					<div class="up-area d-flex justify-content-center align-items-center" onClick={this.goToUp}>
+						<div id="up"><b>UP</b></div>
+					</div>
+
 					<div class="filter" style={{flexBasis: "50%"}}>
 						<div class="filter-title"> Filters </div>
 						<div class="form-group mr-auto ml-auto">
@@ -236,8 +240,9 @@ export default class FeedMain extends React.Component {
 				  			{ tagsRender }
 				  		</div>
 				  	</div>
-				  	<div class="sort d-flex align-items-start justify-content-center" onClick={this.goToUp} style={{flexBasis: "50%"}}>
-				  		<div class="mt-4"><b>UP</b></div>
+				  	
+				  	<div class="sort d-flex align-items-start justify-content-center" style={{flexBasis: "50%"}}>
+				  		
 				  		{/*<div class="filter-title"> Sort </div>
 				  		<select class="sort-select form-control mr-auto ml-auto">
 				  		  <option>Time</option>
