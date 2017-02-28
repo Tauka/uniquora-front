@@ -34,9 +34,15 @@ export default class FeedMain extends React.Component {
 	componentDidMount() {
 		window.addEventListener('scroll', this.handleScroll);
 		$('[data-toggle="tooltip"]').tooltip();
+		// this.props.typeahead.getInstance().clear();
+
 	}
 
 	componentWillReceiveProps(nextProps) {
+		console.log(nextProps.typeahead);
+		// if (nextProps.typeahead != null) {
+		// 	nextProps.typeahead.getInstance().clear();
+		// }
 	}
 
 	componentDidUpdate() {

@@ -9,6 +9,10 @@ html {
 	overflow-y: scroll;
 }
 
+.auto-complete-focus {
+	// background-color: #f7f7f9;
+}
+
 .no-gutters {
   margin-right: 0;
   margin-left: 0;
@@ -19,6 +23,8 @@ html {
     padding-left: 0;
   }
 }
+
+
 
 .loading {
 	height: 100%;
@@ -45,6 +51,23 @@ display: none;
 .red:hover {
 	color: #993838;
 }
+
+//fancy
+
+.fancy {
+   width: 100%; 
+   text-align: center; 
+   border-bottom: 1px solid #000; 
+   line-height: 0.1em;
+   margin: 10px 0 20px; 
+   border-color: #5BC0DE;
+} 
+
+.fancy span { 
+    background:#fff; 
+    padding:0 10px; 
+}
+
 
 /*
 <div class="right-content">

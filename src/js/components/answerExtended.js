@@ -1,20 +1,34 @@
 import React from 'react';
 import '../css/answerExtended.scss';
+import ReactHtmlParser from 'react-html-parser';
 
 export default class AnswerExtended extends React.Component {
 	render() {
-		console.log(this.props.answer);
-
 		const { text, creator, createdDate } = this.props.answer;
 		let date = new Date(createdDate);
 		let hours = date.getHours();
+		if (hours < 10) {
+			hours = "0" + hours.toString();
+		}
 		let minutes = date.getMinutes();
+		if (minutes < 10) {
+			minutes = "0" + minutes.toString();
+		}
 		let day = date.getDate();
+		if (day < 10) {
+			day = "0" + day.toString();
+		}
 		let month = date.getMonth();
+		if (month < 10) {
+			month = "0" + month.toString();
+		}
 		let year = date.getFullYear();
+		if (year < 10) {
+			year = "0" + year.toString();
+		}
 		
 		return (
-				<div class="card question-extended-answer mt-2 mr-auto ml-auto">
+				<div class="card question-extended-answer mt-2">
 				  <div class="card-block">
 					  <div class="user d-flex flex-row justify-content-start">
 					  	<img class="user-image" src={`http://${API_ROOT}/api/avatar/${creator.id}`} style={{borderRadius: "0"}} />
@@ -31,7 +45,7 @@ export default class AnswerExtended extends React.Component {
 					  	</div>
 					  </div>
 					  
-				    <p class="card-text mt-4"> { text } </p>
+				    <p class="card-text mt-4"> { ReactHtmlParser(text) } </p>
 				    	{/*<div class="footer d-flex flex-row justify-content-between">
 					    	<div class="question-extended-answer-upvotes">
 					    		<i class="fa fa-arrow-up green"/>

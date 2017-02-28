@@ -2,10 +2,8 @@ import React from 'react';
 import '../css/autoComplete.scss';
 
 export default class AutoComplete extends React.Component {
+
 	render() {
-
-
-		console.log("IN AUTOCOMPLETE");
 		//array of tags
 		const suggestionsLength = 5;
 		const { typedValue } = this.props;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { hashHistory } from 'react-router';
 import '../css/questionFeed.scss';
+import ReactHtmlParser from 'react-html-parser';
 
 export default class QuestionFeed extends React.Component {
 
@@ -13,7 +14,8 @@ export default class QuestionFeed extends React.Component {
 
 		let bestAnswer = latestAnswer != undefined ?
 				<div class="card-block">
-					<div class="best-answer">
+					<div class="best-answer-header fancy"><span>latest answer</span></div>
+					<div class="best-answer mt-4">
 				  		<div class="user d-flex flex-row">
 				  			<img class="user-image d-inline-block" src={`http://${API_ROOT}/api/avatar/${latestAnswer.creator.id}`} style={{borderRadius: "0"}} />
 				  			<div class="user-info-answer wider-user-info d-inline-block ml-2">
@@ -23,7 +25,7 @@ export default class QuestionFeed extends React.Component {
 				  			{/*<i class="fa fa-check fa-lg d-inline-block align-self-center green-best"/>*/}
 				  		</div>
 				  	</div>
-				    <p class="card-text mt-4">{latestAnswer.text}</p>
+				    <p class="card-text mt-4">{ ReactHtmlParser(latestAnswer.text) }</p>
 				</div>
 			    :
 			    <div class="card-block">

@@ -4,6 +4,11 @@ import AnswerExtended from '../components/answerExtended';
 import { fetchAnswers, addAnswer } from '../actions/answerActions';
 import { getQuestion } from '../actions/questionActions';
 import '../css/questionExtended.scss';
+import marked from 'marked';
+
+// marked.setOptions({
+//   sanitize: true,
+// });
 
 let unlisten = null;
 
@@ -19,8 +24,10 @@ let unlisten = null;
 export default class QuestionExtended extends React.Component {
 	constructor(props) {
 		super(props);
+		this.addAnswer = this.addAnswer.bind(this);
 		this.state = {
-			modalListener: false
+			modalListener: false,
+			answerInput: ""
 		}
 	}
 	
@@ -37,25 +44,25 @@ export default class QuestionExtended extends React.Component {
  	}
 
  	componentDidUpdate() {
- 		if ($('#answerModal')[0] != undefined && !this.state.modalListener) {
- 			$('#answerModal').on('hide.bs.modal', function (e) {
- 				//undanger them
- 				$("#answer-form-group").removeClass("has-danger");
+ 		// if ($('#answer-form-group')[0] != undefined && !this.state.modalListener) {
+ 		// 	// $('#answerModal').on('hide.bs.modal', function (e) {
+ 		// 	// 	//undanger them
+ 		// 	// 	$("#answer-form-group").removeClass("has-danger");
 
- 				//empty them
- 				$("#add-answer").val("");
+ 		// 	// 	//empty them
+ 		// 	// 	$("#add-answer").val("");
 
- 			});
+ 		// 	// });
 
- 			//removing danger at focus
- 			$('#add-answer').on('focus', function(e) {
- 				$("#answer-form-group").removeClass("has-danger");
- 			});
+ 		// 	//removing danger at focus
+ 		// 	$('#add-answer').on('focus', function(e) {
+ 		// 		$("#answer-form-group").removeClass("has-danger");
+ 		// 	});
 
- 			this.setState({
- 				modalListener: true
- 			});
- 		}
+ 		// 	this.setState({
+ 		// 		modalListener: true
+ 		// 	});
+ 		// }
  		//init tooltips
  		$('[data-toggle="tooltip"]').tooltip()
 
@@ -67,18 +74,18 @@ export default class QuestionExtended extends React.Component {
  	}
 
 	addAnswer() {
-		if ($("#add-answer").val() == "") {
+		if (this.state.answerInput == "") {
 			$("#answer-form-group").addClass("has-danger");
 			return;
 		}
 
 
 		this.props.dispatch(addAnswer({
-			text: $("#add-answer").val(),
+			text: marked(this.state.answerInput),
 			questionId: this.props.router.params.questionId
 		}));
 
-		$("#answerModal").modal('hide');
+		// $("#answerModal").modal('hide');
 	}
 
 	trueRender() {
@@ -105,18 +112,34 @@ export default class QuestionExtended extends React.Component {
 			//calculating date
 			let date = new Date(this.props.questionExtended.createdDate);
 			let hours = date.getHours();
+			if (hours < 10) {
+				hours = "0" + hours.toString();
+			}
 			let minutes = date.getMinutes();
+			if (minutes < 10) {
+				minutes = "0" + minutes.toString();
+			}
 			let day = date.getDate();
+			if (day < 10) {
+				day = "0" + day.toString();
+			}
 			let month = date.getMonth();
+			if (month < 10) {
+				month = "0" + month.toString();
+			}
 			let year = date.getFullYear();
+			if (year < 10) {
+				year = "0" + year.toString();
+			}
 
 			//MAIN
 			return <div class="question-extended-wrapper">
-				<div class="question-extended-left-content">
+				{/*<div class="question-extended-left-content">
+
 					<div class="d-flex flex-row justify-content-center">
 						<button class="btn btn-outline-primary" data-toggle="modal" data-target="#answerModal">ANSWER</button>
 					</div>
-					{ /*<div class="card trending-card mt-5 ml-auto mr-auto">
+					<div class="card trending-card mt-5 ml-auto mr-auto">
 						<div class="card-header">
 							Related questions
 						</div>
@@ -142,9 +165,9 @@ export default class QuestionExtended extends React.Component {
 					  	  	<div class="badge badge-pill badge-info d-inline ml-auto">CSCI151</div>
 					  	  </a>
 					  	</div>
-					</div> */ }
-				</div>
-				<div class="card question-extended-question mr-auto ml-auto">
+					</div>
+				</div>*/}
+				<div class="card question-extended-question">
 					<div class="card-header d-flex flex-row align-items-center justify-content-end">
 						<div class="question-title mr-auto">{ this.props.questionExtended.title }</div>
 						<div class="datetime d-flex flex-row align-items-center">
@@ -166,6 +189,12 @@ export default class QuestionExtended extends React.Component {
 				    </div>
 				  </div>
 				  { answers }
+				  <div id="answer-form-group" class="form-group question-extended-answer-input mt-4">
+				      <label for="exampleTextarea"><b>Your answer</b></label>
+				      <textarea id="add-answer" class="form-control" id="exampleTextarea" rows="3" value={this.state.answerInput} onChange={(e) => {this.setState({answerInput: e.target.value})}} onFocus={() => {$("#answer-form-group").removeClass("has-danger")}}></textarea>
+				      <button class="btn btn-primary mt-2 mr-auto" onClick={this.addAnswer}> Add answer </button>
+			    	</div>
+
 
 				{/*MODAL WINDOW*/}
 				<div class="modal fade" id="answerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -189,6 +218,7 @@ export default class QuestionExtended extends React.Component {
 				  </div>
 				</div>		
 			</div>
+
 		} else {
 			//ERROR
 			return <div> ERROR </div>

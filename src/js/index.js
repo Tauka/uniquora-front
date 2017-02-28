@@ -9,6 +9,7 @@ import Tether from "tether";
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap';
 import './css/global.scss';
+import './helpers/findReact';
 
 
 import AppContainer from "./pages/AppContainer"

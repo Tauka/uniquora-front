@@ -18,6 +18,28 @@ $primary-color: #514a60;
 	flex-basis: 89%;
 }
 
+.bootstrap-typeahead {
+	width: 50%;
+}
+
+.bootstrap-typeahead-menu {
+	width: 100%;
+
+	li:hover {
+		background-color: #f7f7f9;
+	}
+
+	li.active {
+		background-color: #337ab7;
+		color: white;
+	}
+
+	li {
+		padding: 2px;
+		padding-left: 20px;
+	}
+}
+
 #header {
 	background-color: #FAFAFA;
 	transition: all 0.2s linear;
@@ -25,6 +47,11 @@ $primary-color: #514a60;
 
 #header.active {
 	box-shadow: 0 0 10px rgba(0,0,0,0.4);
+}
+
+/* override */
+.bootstrap-typeahead-input-main {
+	background-color: white !important;
 }
 
 

@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import * as userActions from "../actions/userActions";
 import * as questionActions from "../actions/questionActions";
 import '../css/feed.scss';
+import { Menu, MenuItem, Typeahead, AsyncTypeahead } from 'react-bootstrap-typeahead';
 
 @connect((store) => {
 			return {
@@ -26,7 +27,8 @@ export default class Feed extends React.Component {
 		this.logout = this.logout.bind(this);
 		this.goToFeed = this.goToFeed.bind(this);
 		this.addQuestion = this.addQuestion.bind(this);
-		this.searchHandleChange = this.searchHandleChange.bind(this);
+		// this.searchHandleChange = this.searchHandleChange.bind(this);
+		this.goToQuestionForm = this.goToQuestionForm.bind(this);
 		this.courseHandleChange = this.courseHandleChange.bind(this);
 		this.onRootClick = this.onRootClick.bind(this);
 
@@ -37,7 +39,8 @@ export default class Feed extends React.Component {
 		      courseValue: "",
 		      courseValueToRequest: null,
 		      modalListener: false,
-		      searchInputListener: false	
+		      searchInputListener: false,
+		      options: []
 
 		};
 	}
@@ -91,9 +94,10 @@ export default class Feed extends React.Component {
 				$("#question-details-input").val("");
 
 				//clear search bar
-				this.setState({
-					searchTypedValue: ""
-				});
+				// this.setState({
+				// 	searchTypedValue: ""
+				// });
+				$(".bootstrap-typeahead-input-main").val("");
 
 			}.bind(this));
 
@@ -113,33 +117,60 @@ export default class Feed extends React.Component {
 			this.setState({
 				modalListener: true
 			});
+
+			let typeaheadInput = $(".bootstrap-typeahead-input-main").detach();
+			let typeaheadInputHint = $(".bootstrap-typeahead-input-hint").detach();
+			$('.bootstrap-typeahead-input').append('<div class="input-group"></div>');
+			$(".input-group").append(typeaheadInput);
+			$(".input-group").append('<span class="input-group-btn"><button id="question-button" class="btn btn-secondary" type="button"><i class="fa fa-question fa-lg" aria-hidden="true"></i></button></span>');
+			$("#question-button").click(() => {
+				$("#question-add-modal").modal('show');
+				$("#question-title-input").val($(".bootstrap-typeahead-input-main").val());
+			});
+
+			// $(".bootstrap-typeahead-input-main").keydown((event) => {
+			// 	if (event.keyCode == 13) {
+			// 		event.preventDefault();
+			// 		$("#question-add-modal").modal('show');
+			// 		$("#question-title-input").val($(".bootstrap-typeahead-input-main").val());
+			// 	}
+			// });
+			
+			// $(".input-group").append(typeaheadInputHint);
+
+
 		}
 
-		if ($('#search-input-form')[0] != undefined && !this.state.searchInputListener) {
-			$('#search-input-field').focus(() => {
-				$('#search-input-form').animate({
-					flexBasis: "50%"
-				}, 200);
-			});
 
-			$('#search-input-field').blur(() => {
-				$('#search-input-form').animate({
-					flexBasis: "30%"
-				}, 200);
-			});
 
-			$('#search-input-field').keypress((e) => {
-				if (e.keyCode == 13) {
-					$("#question-add-modal").modal('show');
-					$("#question-title-input").val(this.state.searchTypedValue);
-				}
-			});
+
+		// if ($('#search-input-form')[0] != undefined && !this.state.searchInputListener) {
+		// 	$('#search-input-field').focus(() => {
+		// 		$('#search-input-form').animate({
+		// 			flexBasis: "50%"
+		// 		}, 200);
+		// 	});
+
+		// 	$('#search-input-field').blur(() => {
+		// 		$('#search-input-form').animate({
+		// 			flexBasis: "30%"
+		// 		}, 200);
+		// 	});
+
+		// 	$('#search-input-field').keypress((e) => {
+		// 		// if (e.keyCode == 13) {
+		// 		// 	e.preventDefault();
+		// 		// 	$("#question-add-modal").modal('show');
+		// 		// 	$("#question-title-input").val(this.state.searchTypedValue);
+		// 		// }
+		// 	});
 			
 
-			this.setState({
-				searchInputListener: true
-			});
-		}
+		// 	this.setState({
+		// 		searchInputListener: true
+		// 	});
+		// }
+
 	}
 
 	addQuestion() {
@@ -180,18 +211,12 @@ export default class Feed extends React.Component {
 		
 	}
 
-	closeAddQuestionModal() {
+	goToQuestionForm(selected) {
 
-	}
-
-	goToQuestionForm(questionId) {
-		console.log(this.props.router);
-		this.props.router.push(`question/${questionId}`);
-
-		//clear search bar
-		this.setState({
-			searchTypedValue: ""
-		});
+		//if there is a input, navigate to its url
+		if (selected[0] != undefined) {
+			this.props.router.push(`question/${selected[0].id}`);
+		}
 	}
 
 
@@ -204,12 +229,11 @@ export default class Feed extends React.Component {
 	}
 
 
-	searchHandleChange(event) {
-		this.setState({
-			searchDropdownRender: true, 
-			searchTypedValue: event.target.value
-		}); 
-	}
+	// searchHandleChange(value) {
+	// 	this.setState({
+	// 		searchTypedValue: value
+	// 	}); 
+	// }
 
 	courseHandleChange(event) {
 		this.setState({
@@ -245,6 +269,19 @@ export default class Feed extends React.Component {
 		} 
 	}
 
+	renderMenu(results, menuProps) {
+        return (
+          <Menu {...menuProps}>
+            {results.map((result, index) => {
+            return <MenuItem onClick={() => {console.log("TAUKA")}} option={result} position={index}>
+		            	{result.label}
+		            </MenuItem>
+            })}
+          </Menu>
+        );
+      
+	}
+
 	render() {
 
 		let render = null;
@@ -254,24 +291,50 @@ export default class Feed extends React.Component {
 			 			</div>;
 		} else if (this.props.questions.questionsFetchSuccess) {
 			let questions = this.props.questions.questions.map((questionItem) => { return <QuestionFeed key={questionItem.id} question={ questionItem } />});;
-			let suggestions = this.props.questions.questions.map((questionItem) => { return { title: questionItem.title, id: questionItem.id } });
+			let suggestions = this.props.questions.questions.map((questionItem) => { return { label: questionItem.title, id: questionItem.id } });
 			let courses =  this.props.questions.courses.map((course) => { return { title: course.COURSETITLE, id: course.id } });
 			 			 
 			render = <div class="feed-root" onClick={this.onRootClick} >
 							<nav id="header" class="navbar fixed-top navbar-light flex-row bg-faded justify-content-center">
 								<div class="navbar-wrapper d-flex flex-row justify-content-between">
 								  	<a class="navbar-brand" onClick={this.goToFeed}><b>UNIQUORA</b></a>
-								    <form id="search-input-form" class="form-inline" style={{flexBasis: "30%"}}>
-								      <input id="search-input-field" class="navbar-input form-control" value={this.state.searchTypedValue} type="text" placeholder="Ask or search" onChange={this.searchHandleChange} style={{width: "100%"}}/>
+								    {/*<form id="search-input-form" class="form-inline" style={{flexBasis: "30%"}}>
+								      <input id="search-input-field" class="navbar-input form-control" value={this.state.searchTypedValue} name="pwd" placeholder="Ask or search" autoComplete="off" autoCapitalize="off" spellCheck="false" role="textbox" onChange={this.searchHandleChange} style={{width: "100%"}}/>
 								      { this.autoComplete(suggestions, this.state.searchTypedValue, this.state.searchDropdownRender, (id) => { this.goToQuestionForm(id) }, {width: "44%", top: "2.8rem"}, () => {
 								      		$("#question-add-modal").modal('show');
 								      		$("#question-title-input").val(this.state.searchTypedValue);
-								      }) }
-								    </form>
+								      })} 
+								      
+								    </form>*/}
+
+								    {/*<Typeahead
+									    renderMenu={this.renderMenu.bind(this)}
+								    	onChange={this.goToQuestionForm}
+								    	options={suggestions}
+								    	ref={(dom) => {this.typeahead = dom}}
+								    	
+								    />*/}
+
+								    <AsyncTypeahead
+								      labelKey="title"
+								      onSearch={query => (
+								        fetch(`http://${API_ROOT}/api/search?query=${query}`, {
+								        	headers: {'JWT': this.props.users.token}
+								        })
+								          .then(resp => resp.json())
+								          .then(json => this.setState({options: json}))
+								      )}
+								      options={this.state.options}
+								      onChange={this.goToQuestionForm}
+								      defaultSelected={this.state.options.slice(0, 1)}
+								      ref={(dom) => {this.typeahead = dom}}
+								    />
+								    
+								   
 								    <button class="btn btn-outline-warning" onClick={this.logout}>LOGOUT</button>
 							    </div>
 							</nav>
-							{ React.cloneElement(this.props.children, { questions: this.props.questions.questions, fetchQuestions: this.props.questionActions.fetchQuestions, loadedPage: this.props.questions.loadedPage, questionsEmpty: this.props.questions.questionsEmpty, user: this.props.users.authorizedUser, courses: this.props.questions.courses})}
+							{ React.cloneElement(this.props.children, { questions: this.props.questions.questions, fetchQuestions: this.props.questionActions.fetchQuestions, loadedPage: this.props.questions.loadedPage, questionsEmpty: this.props.questions.questionsEmpty, user: this.props.users.authorizedUser, courses: this.props.questions.courses, typeahead: this.typeahead})}
 							<div class="modal fade" id="question-add-modal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 							  <div class="modal-dialog" role="document">
 							    <div class="modal-content">
@@ -286,7 +349,7 @@ export default class Feed extends React.Component {
 							      		<input id="question-title-input" tabindex="1" class="form-control" autocomplete="off" type="text" placeholder="Your question"/>
 							      	</div>
 							      	<div id="question-form-group-course" class="form-group">
-							      		<input id="question-course-input" class="form-control mt-2" value={this.state.courseValue} type="text" autocomplete="off" onChange={this.courseHandleChange} placeholder="Enter course title"/>
+							      		<input id="question-course-input" class="form-control mt-2" value={this.state.courseValue} type="text" autoComplete="off" onChange={this.courseHandleChange} placeholder="Enter course title"/>
 							      		{ this.autoComplete(courses, this.state.courseValue, this.state.courseDropdownRender, (id, name) => { this.onCourseModalClick(id, name) }, {width: "92%", top: "10.3rem"}, null) }
 							      	</div>
 							      	<div id="question-form-group-text" class="form-group">
