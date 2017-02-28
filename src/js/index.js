@@ -18,6 +18,7 @@ import Feed from "./pages/Feed";
 import QuestionExtended from "./pages/QuestionExtended";
 import FeedMainWrapper from "./pages/FeedMainWrapper";
 import FeedMain from "./pages/FeedMain";
+import EmailConfirm from "./pages/EmailConfirm";
 
 
 
@@ -34,6 +35,7 @@ ReactDOM.render(
 					</Route>
 				</Route>
 				<Route path="auth" component={Auth}/>
+				<Route path="emailconfirm" name="email-confirmation" component={EmailConfirm}/>
 			</Route>
 		</Router>
 	</Provider>, 

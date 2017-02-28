@@ -217,6 +217,8 @@ export default class Feed extends React.Component {
 		if (selected[0] != undefined) {
 			this.props.router.push(`question/${selected[0].id}`);
 		}
+
+		this.typeahead.getInstance().blur();
 	}
 
 

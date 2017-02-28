@@ -76,6 +76,9 @@ export default function reducer(state={
 		case userActions.USER_EXIST_FAIL: {
 			return {...state, userExistSuccess: null, userExistPending: false, error: action.payload}
 		}
+		case userActions.CONFIRM_EMAIL: {
+			return {...state, }
+		}
 	}
 
 	return state;

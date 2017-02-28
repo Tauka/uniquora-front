@@ -17,7 +17,10 @@ export const userActions = {
 	USER_EXIST_SUCCESS: "USER_EXIST_SUCCESS",
 	USER_EXIST_FAIL: "USER_EXIST_FAIL",
 	USER_EXIST_RESET: "USER_EXIST_RESET",
-	USER_EXIST_NOTSUCCESS: "USER_EXIST_NOTSUCCESS"
+	USER_EXIST_NOTSUCCESS: "USER_EXIST_NOTSUCCESS",
+	CONFIRM_EMAIL_PENDING: "CONFIRM_EMAIL_PENDING",
+	CONFIRM_EMAIL_SUCCESS: "CONFIRM_EMAIL_SUCCESS",
+	CONFIRM_EMAIL_FAIL: "CONFIRM_EMAIL_FAIL"
 }
 
 //!!!DUMMY LOGIN URL
@@ -140,5 +143,21 @@ export function userExistReset() {
 export function unauthorizedRequest() {
 	return {
 		type: userActions.UNAUTHORIZED_REQUEST
+	}
+}
+
+export function confirmEmail(code, id) {
+	return function(dispatch) {
+		dispatch({type: userActions.CONFIRM_EMAIL_PENDING});
+		axios.get(`http://${API_ROOT}/api/confirm?code=${code}&id=${id}`)
+		.then((response) => {
+			dispatch({type: userActions.CONFIRM_EMAIL_SUCCESS});
+		})
+		.catch((err) => {
+			dispatch({
+				type: userActions.CONFIRM_EMAIL_FAIL,
+				payload: err
+			})
+		})
 	}
 }
