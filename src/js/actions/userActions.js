@@ -41,7 +41,6 @@ export function registerUser(newUser) {
 		.then((response) => {				
 			//if registration is successful tell it to reducer and authorize user
 			dispatch({type: userActions.USER_REGISTER_SUCCESS});
-			dispatch(authorizeUser(newUser));
 			// dispatch(authorizeUser(newUser));
 		})
 		.catch((err) => {

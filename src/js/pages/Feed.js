@@ -7,6 +7,7 @@ import * as userActions from "../actions/userActions";
 import * as questionActions from "../actions/questionActions";
 import '../css/feed.scss';
 import { Menu, MenuItem, Typeahead, AsyncTypeahead } from 'react-bootstrap-typeahead';
+import marked from 'marked';
 
 @connect((store) => {
 			return {
@@ -204,7 +205,7 @@ export default class Feed extends React.Component {
 
 		this.props.questionActions.addQuestion({
 			title: $("#question-title-input").val(),
-			text: $("#question-details-input").val(),
+			text: marked($("#question-details-input").val())
 			courseId: this.state.courseValueToRequest,
 			isAnonymous: false
 		});
