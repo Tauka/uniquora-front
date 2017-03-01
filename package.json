@@ -1,6 +1,6 @@
 {
   "name": "uniquora",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "",
   "main": "webpack.config.js",
   "dependencies": {
@@ -19,6 +19,7 @@
     "flux": "",
     "history": "",
     "jquery": "^3.1.1",
+    "latest-version": "^3.0.0",
     "marked": "^0.3.6",
     "normalizr": "^3.0.2",
     "react": "",
@@ -45,8 +46,8 @@
   },
   "scripts": {
     "dev": "webpack-dev-server --content-base src --inline --hot --history-api-fallback",
-    "build": "NODE_ENV=production webpack --config webpack.production.config.js -p && cp src/index.html uniquora/index.html"
+    "build": "NODE_ENV=production webpack --config webpack.production.config.js -p && cp src/index.html uniquora/index.html && cp src/icon.png uniquora/icon.png"
   },
-  "author": "",
+  "author": "CodingWolves",
   "license": "ISC"
 }
