@@ -358,7 +358,7 @@ export default class Feed extends React.Component {
 							      		{ this.autoComplete(courses, this.state.courseValue, this.state.courseDropdownRender, (id, name) => { this.onCourseModalClick(id, name) }, {width: "93%", top: "10.7rem"}, null) }
 							      	</div>
 							      	<div id="question-form-group-text" class="form-group">
-							      		<textarea id="question-details-input"class="form-control mt-2" rows="3" type="text" placeholder="Detailed question" style={{resize: "none"}}/>
+							      		<textarea id="question-details-input"class="form-control mt-2" rows="3" type="text" placeholder="Detailed question"/>
 							      	</div>
 							      </div>
 							      <div class="modal-footer">
