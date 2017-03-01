@@ -1,6 +1,10 @@
 import React from 'react';
 import '../css/answerExtended.scss';
-import ReactHtmlParser from 'react-html-parser';
+import marked from 'marked';
+
+marked.setOptions({
+  sanitize: true
+});
 
 export default class AnswerExtended extends React.Component {
 	render() {
@@ -45,7 +49,7 @@ export default class AnswerExtended extends React.Component {
 					  	</div>
 					  </div>
 					  
-				    <p class="card-text mt-4"> { ReactHtmlParser(text) } </p>
+				    <p class="card-text mt-4" dangerouslySetInnerHTML={{ __html: marked(text) }} />
 				    	{/*<div class="footer d-flex flex-row justify-content-between">
 					    	<div class="question-extended-answer-upvotes">
 					    		<i class="fa fa-arrow-up green"/>

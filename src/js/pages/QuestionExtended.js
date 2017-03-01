@@ -5,7 +5,10 @@ import { fetchAnswers, addAnswer } from '../actions/answerActions';
 import { getQuestion } from '../actions/questionActions';
 import '../css/questionExtended.scss';
 import marked from 'marked';
-import ReactHtmlParser from 'react-html-parser';
+
+marked.setOptions({
+  sanitize: true
+});
 
 // marked.setOptions({
 //   sanitize: true,
@@ -92,7 +95,7 @@ export default class QuestionExtended extends React.Component {
 
 
 		this.props.dispatch(addAnswer({
-			text: marked(this.state.answerInput),
+			text: this.state.answerInput,
 			questionId: this.props.router.params.questionId
 		}));
 
@@ -194,7 +197,7 @@ export default class QuestionExtended extends React.Component {
 						<div class="badge badge-pill badge-info d-inline" data-toggle="tooltip" data-placement="top" title={`${this.props.questionExtended.course.COURSETITLE}`}>{this.props.questionExtended.course.COURSECODE}</div>
 					</div>
 				  <div class="card-block">
-				    <p class="card-text">{ ReactHtmlParser(this.props.questionExtended.text) }</p>
+				    <p class="card-text" dangerouslySetInnerHTML={{ __html: marked(this.props.questionExtended.text) }} />
 				      {/*<div class="tags">
 				      	<span class="badge badge-pill badge-default mr-2">programming</span>
 				      	<span class="badge badge-pill badge-default mr-2">unity</span>

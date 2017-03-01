@@ -33,6 +33,7 @@
     "redux-logger": "",
     "redux-promise-middleware": "",
     "redux-thunk": "",
+    "sanitize-html": "^1.14.1",
     "style-loader": "",
     "svg-url-loader": "",
     "tether": "^1.4.0"

@@ -1,7 +1,11 @@
 import React from 'react';
 import { hashHistory } from 'react-router';
 import '../css/questionFeed.scss';
-import ReactHtmlParser from 'react-html-parser';
+import marked from 'marked';
+
+marked.setOptions({
+  sanitize: true
+});
 
 export default class QuestionFeed extends React.Component {
 
@@ -25,7 +29,7 @@ export default class QuestionFeed extends React.Component {
 				  			{/*<i class="fa fa-check fa-lg d-inline-block align-self-center green-best"/>*/}
 				  		</div>
 				  	</div>
-				    <p class="card-text mt-4">{ ReactHtmlParser(latestAnswer.text) }</p>
+				    <p class="card-text mt-4" dangerouslySetInnerHTML={{ __html: marked(latestAnswer.text) }} />
 				</div>
 			    :
 			    <div class="card-block">

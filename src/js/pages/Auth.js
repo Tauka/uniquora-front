@@ -164,8 +164,8 @@ export default class Auth extends React.Component {
 			if (!this.props.user.userExistSuccess) {
 				authPasswordConfirm = 
 				<div class="input-group">
-					<span class="input-group-addon auth-input-addon" data-toggle="tooltip" data-placement="top" title="Confirm password. When they match, you will be registered automatically" id="basic-addon1"><i class="fa fa-unlock fa-lg"></i></span>
-					<input type="password" class="form-control auth-password-confirm" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
+					<span class="input-group-addon auth-input-addon" id="basic-addon1"><i class="fa fa-unlock fa-lg"></i></span>
+					<input type="password" class="form-control auth-password-confirm" data-toggle="tooltip" data-placement="top" title="Confirm password. When they match, you will be registered automatically"  onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
 				</div>
 
 				passwordTooltip = "New password. 8 characters at least";
@@ -174,8 +174,8 @@ export default class Auth extends React.Component {
 
 			authPassword = 
 			<div class="input-group mt-3 mb-3">
-				<span class="input-group-addon auth-input-addon" ref="passwordComponent" data-toggle="tooltip" data-placement="top" title={`${passwordTooltip}`}  id="basic-addon1"><i class="fa fa-unlock-alt fa-lg"></i></span>
-				<input type="password" key={this.state.passwordComponentKey} class="form-control auth-password-pass" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
+				<span class="input-group-addon auth-input-addon" id="basic-addon1"><i class="fa fa-unlock-alt fa-lg"></i></span>
+				<input type="password" key={this.state.passwordComponentKey}  ref="passwordComponent" data-toggle="tooltip" data-placement="top" title={`${passwordTooltip}`}  class="form-control auth-password-pass" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
 			</div>
 		}
 
@@ -203,8 +203,8 @@ export default class Auth extends React.Component {
 				</div>
 			  	<div class="fields d-flex flex-column">
 				    <div class="input-group">
-				    	<span class="input-group-addon auth-input-addon" data-toggle="tooltip" data-placement="top" title="Your NU email"  id="basic-addon1"><i class="fa fa-envelope fa-lg"></i></span>
-				    	<input type="text" class="form-control auth-login" placeholder="name.lastname@nu.edu.kz" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
+				    	<span class="input-group-addon auth-input-addon" id="basic-addon1"><i class="fa fa-envelope fa-lg"></i></span>
+				    	<input type="text" class="form-control auth-login" data-toggle="tooltip" data-placement="top" title="Your NU email" placeholder="name.lastname@nu.edu.kz" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
 				    </div>
 				    {authPassword}
 				    {authPasswordConfirm}
