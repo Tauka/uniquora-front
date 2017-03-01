@@ -68,6 +68,24 @@ display: none;
     padding:0 10px; 
 }
 
+// .modal-open, .modal-open .navbar-fixed-top {
+// 	margin-right: auto !important;
+// }
+
+body {
+overflow-y: scroll;
+}
+
+body.modal-open {
+overflow-y: scroll;
+margin: 0;
+}
+
+.modal-open {
+	padding-right: 0 !important;
+}
+
+
 
 /*
 <div class="right-content">

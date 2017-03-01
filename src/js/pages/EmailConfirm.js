@@ -12,18 +12,31 @@ export default class EmailConfirm extends React.Component {
 
 	componentWillMount() {
         fetch(`http://${API_ROOT}/api/confirm?code=${this.props.location.query.code}&id=${this.props.location.query.id}`)
-        .then(resp => resp.json())
-        .then((json) => {
-        	this.setState({
-        		confirmed: true
-        	});
+        .then((resp) => {
+        	if (resp.ok) {
+        		this.setState({
+        			confirmed: true
+        		});
 
-        	console.log(json);
-
-        	setTimeout(() => {
-        		this.props.router.push('/auth');
-        	}, 2000);
+        		setTimeout(() => {
+        		    this.props.router.push('/auth');
+        		}, 2000);
+        	} else {
+        		this.setState({
+        			confirmed: false
+        		});
+        	}
         })
+        // .then((json) => {
+        // 	// console.log(json);
+        // 	// this.setState({
+        // 	// 	confirmed: true
+        // 	// });
+
+        // 	// console.log(json);
+
+        // 	
+        // })
         .catch((er) => {
         	this.setState({
         		confirmed: false

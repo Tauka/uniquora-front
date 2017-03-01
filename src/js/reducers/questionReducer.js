@@ -32,7 +32,7 @@ export default function reducer(state={
 			return {...state, questionsFetchPending: false, questionsFetchSuccess: true, questions: [...state.questions, ...action.payload.data], questionsFetchInitialPending: false, loadedPage: state.loadedPage + 1}
 		}
 		case questionActions.QUESTIONS_FETCH_EMPTY: {
-			return {...state, questionsFetchPending: false, questionsFetchSuccess: true, questionsEmpty: true}
+			return {...state, questionsFetchPending: false, questionsFetchSuccess: true, questionsEmpty: true, questionsFetchInitialPending: false}
 		}
 		case questionActions.QUESTIONS_FETCH_FAIL: {
 			return {...state, questionsFetching: false, questionsFetchSuccess: false, error: action.payload}

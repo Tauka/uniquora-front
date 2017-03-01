@@ -352,7 +352,7 @@ export default class Feed extends React.Component {
 							      	</div>
 							      	<div id="question-form-group-course" class="form-group">
 							      		<input id="question-course-input" class="form-control mt-2" value={this.state.courseValue} type="text" autoComplete="off" onChange={this.courseHandleChange} placeholder="Enter course title"/>
-							      		{ this.autoComplete(courses, this.state.courseValue, this.state.courseDropdownRender, (id, name) => { this.onCourseModalClick(id, name) }, {width: "92%", top: "10.3rem"}, null) }
+							      		{ this.autoComplete(courses, this.state.courseValue, this.state.courseDropdownRender, (id, name) => { this.onCourseModalClick(id, name) }, {width: "93%", top: "10.7rem"}, null) }
 							      	</div>
 							      	<div id="question-form-group-text" class="form-group">
 							      		<textarea id="question-details-input"class="form-control mt-2" rows="3" type="text" placeholder="Detailed question" style={{resize: "none"}}/>
