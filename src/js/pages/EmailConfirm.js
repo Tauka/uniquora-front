@@ -56,7 +56,7 @@ export default class EmailConfirm extends React.Component {
 					</div>;
 		} else if (this.state.confirmed == false) {
 			render = <div class="email-confirm-wrapper">
-						<h1> There has been error. Try again </h1>
+						<h1> There has been an error. Try again </h1>
 						<i class="fa fa-exclamation-triangle fa-2x" aria-hidden="true"></i>
 					</div>
 		} else {

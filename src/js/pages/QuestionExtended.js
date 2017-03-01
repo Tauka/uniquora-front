@@ -10,7 +10,7 @@ import marked from 'marked';
 //   sanitize: true,
 // });
 
-let unlisten = null;
+// let unlisten = null;
 
 @connect((store) => {
 	return {
@@ -36,11 +36,21 @@ export default class QuestionExtended extends React.Component {
 		//detect refresh
 
 		//detect url change
-		unlisten = this.props.router.listen((location) => {
-			if (this.props.router.params.questionId != undefined) {
-				this.props.dispatch(getQuestion(this.props.router.params.questionId));
-			}
-		});
+		// unlisten = this.props.router.listen((location) => {
+ 		// 	if (this.props.router.params.questionId != undefined) {
+ 		// 		this.props.dispatch(getQuestion(this.props.router.params.questionId));
+ 		// 	}
+ 		// });
+ 	}
+
+ 	componentDidMount() {
+
+ 	}
+
+ 	componentWillReceiveProps(newProps) {
+ 		if (newProps.params.questionId !== this.props.params.questionId) {
+			this.props.dispatch(getQuestion(this.props.router.params.questionId));
+ 		}
  	}
 
  	componentDidUpdate() {
@@ -68,9 +78,9 @@ export default class QuestionExtended extends React.Component {
 
  	}
  	componentWillUnmount() {
- 		if (unlisten != null) {
- 			unlisten();
- 		}
+ 		// if (unlisten != null) {
+ 		// 	unlisten();
+ 		// }
  	}
 
 	addAnswer() {
