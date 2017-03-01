@@ -17,7 +17,8 @@ export default class Auth extends React.Component {
 		this.state = {
 			authLogin: "",
 			authPassword: "",
-			authPasswordConfirm: "" 
+			authPasswordConfirm: "",
+			passwordComponentKey: Math.random()
 		}
 	};
 
@@ -33,6 +34,12 @@ export default class Auth extends React.Component {
 		if (nextProps.user.isAuth) {
 			this.props.router.push('/');
 		}
+	}
+
+	componentDidUpdate() {
+		console.log("AUTH UPDATE!");
+		$('[data-toggle="tooltip"]').tooltip();
+
 	}
 
 	//ROUTE TO FEED IF LOGGED IN
@@ -146,6 +153,9 @@ export default class Auth extends React.Component {
 		let authPasswordConfirm;
 		let loading;
 		let confirmail;
+		let passwordTooltip = "Password";
+
+
 
 		//userExistSuccess == null => response has not been sent; true or false => response has been sent
 		if (this.props.user.userExistSuccess != null) {
@@ -154,16 +164,18 @@ export default class Auth extends React.Component {
 			if (!this.props.user.userExistSuccess) {
 				authPasswordConfirm = 
 				<div class="input-group">
-					<span class="input-group-addon auth-input-addon" id="basic-addon1"><i class="fa fa-unlock fa-lg"></i></span>
+					<span class="input-group-addon auth-input-addon" data-toggle="tooltip" data-placement="top" title="Confirm password. When they match, you will be registered automatically" id="basic-addon1"><i class="fa fa-unlock fa-lg"></i></span>
 					<input type="password" class="form-control auth-password-confirm" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
 				</div>
+
+				passwordTooltip = "New password. 8 characters at least";
 			}
 
 
 			authPassword = 
 			<div class="input-group mt-3 mb-3">
-				<span class="input-group-addon auth-input-addon" id="basic-addon1"><i class="fa fa-unlock-alt fa-lg"></i></span>
-				<input type="password" class="form-control auth-password-pass" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
+				<span class="input-group-addon auth-input-addon" ref="passwordComponent" data-toggle="tooltip" data-placement="top" title={`${passwordTooltip}`}  id="basic-addon1"><i class="fa fa-unlock-alt fa-lg"></i></span>
+				<input type="password" key={this.state.passwordComponentKey} class="form-control auth-password-pass" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
 			</div>
 		}
 
@@ -191,7 +203,7 @@ export default class Auth extends React.Component {
 				</div>
 			  	<div class="fields d-flex flex-column">
 				    <div class="input-group">
-				    	<span class="input-group-addon auth-input-addon" id="basic-addon1"><i class="fa fa-envelope fa-lg"></i></span>
+				    	<span class="input-group-addon auth-input-addon" data-toggle="tooltip" data-placement="top" title="Your NU email"  id="basic-addon1"><i class="fa fa-envelope fa-lg"></i></span>
 				    	<input type="text" class="form-control auth-login" placeholder="name.lastname@nu.edu.kz" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
 				    </div>
 				    {authPassword}

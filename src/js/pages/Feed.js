@@ -205,7 +205,7 @@ export default class Feed extends React.Component {
 
 		this.props.questionActions.addQuestion({
 			title: $("#question-title-input").val(),
-			text: marked($("#question-details-input").val())
+			text: marked($("#question-details-input").val()),
 			courseId: this.state.courseValueToRequest,
 			isAnonymous: false
 		});
