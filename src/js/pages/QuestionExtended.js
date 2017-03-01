@@ -85,6 +85,10 @@ export default class QuestionExtended extends React.Component {
 			questionId: this.props.router.params.questionId
 		}));
 
+		this.setState({
+			answerInput: ""
+		});
+
 		// $("#answerModal").modal('hide');
 	}
 
