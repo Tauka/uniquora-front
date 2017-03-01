@@ -97,7 +97,9 @@ export default class Feed extends React.Component {
 				// this.setState({
 				// 	searchTypedValue: ""
 				// });
-				$(".bootstrap-typeahead-input-main").val("");
+				if (this.typeahead != null) {
+					this.typeahead.getInstance().clear();
+				}
 
 			}.bind(this));
 
