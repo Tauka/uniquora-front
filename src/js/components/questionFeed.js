@@ -4,7 +4,8 @@ import '../css/questionFeed.scss';
 import marked from 'marked';
 
 marked.setOptions({
-  sanitize: true
+  sanitize: true,
+  gfm: true
 });
 
 export default class QuestionFeed extends React.Component {
@@ -24,7 +25,7 @@ export default class QuestionFeed extends React.Component {
 				  			<img class="user-image d-inline-block" src={`http://${API_ROOT}/api/avatar/${latestAnswer.creator.id}`} style={{borderRadius: "0"}} />
 				  			<div class="user-info-answer wider-user-info d-inline-block ml-2">
 				  				<div class="user-name">{ latestAnswer.creator.name }</div>
-				  				<div class="user-details">{latestAnswer.creator.school}</div>
+				  				<div class="user-details">{latestAnswer.creator.school}, {latestAnswer.creator.year}</div>
 				  			</div>
 				  			{/*<i class="fa fa-check fa-lg d-inline-block align-self-center green-best"/>*/}
 				  		</div>

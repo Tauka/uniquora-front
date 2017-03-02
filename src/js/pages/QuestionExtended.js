@@ -7,7 +7,9 @@ import '../css/questionExtended.scss';
 import marked from 'marked';
 
 marked.setOptions({
-  sanitize: true
+  sanitize: true,
+  gfm: true,
+  breaks: true
 });
 
 // marked.setOptions({

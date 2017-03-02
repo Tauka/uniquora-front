@@ -3,7 +3,9 @@ import '../css/answerExtended.scss';
 import marked from 'marked';
 
 marked.setOptions({
-  sanitize: true
+  sanitize: true,
+  gfm: true,
+  breaks: true
 });
 
 export default class AnswerExtended extends React.Component {
