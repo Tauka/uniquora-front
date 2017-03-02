@@ -117,7 +117,7 @@ export default class Auth extends React.Component {
 	 }
 
 	 autoLogin(authLogin, authPassword) {
- 		if (this.state.authPassword.length >= 5 && this.props.user.userExistSuccess) {
+ 		if (authPassword.length >= 5 && this.props.user.userExistSuccess) {
 	 		this.props.dispatch(authorizeUser({
 	 			email: authLogin,
 	 			password: authPassword
@@ -158,7 +158,7 @@ export default class Auth extends React.Component {
 
 
 		//userExistSuccess == null => response has not been sent; true or false => response has been sent
-		if (this.props.user.userExistSuccess != null) {
+		if (this.props.user.userExistSuccess != null && this.props.user.userInDB) {
 			userExistMessage = this.props.user.userExistSuccess ? <h5 class="user-exist">LOGIN</h5> : <h5 class="user-exist">REGISTER</h5>
 
 			if (!this.props.user.userExistSuccess) {
@@ -177,6 +177,8 @@ export default class Auth extends React.Component {
 				<span class="input-group-addon auth-input-addon" id="basic-addon1"><i class="fa fa-unlock-alt fa-lg"></i></span>
 				<input type="password" key={this.state.passwordComponentKey}  ref="passwordComponent" data-toggle="tooltip" data-placement="top" title={`${passwordTooltip}`}  class="form-control auth-password-pass" onFocus={() => {$('.auth-password-pass').tooltip('hide')}} onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
 			</div>
+		} else if (this.props.user.userInDB == false) {
+			userExistMessage = <h5 class="user-exist"> NOT IN DB </h5>;
 		}
 
 

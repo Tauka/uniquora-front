@@ -18,6 +18,7 @@ export const userActions = {
 	USER_EXIST_FAIL: "USER_EXIST_FAIL",
 	USER_EXIST_RESET: "USER_EXIST_RESET",
 	USER_EXIST_NOTSUCCESS: "USER_EXIST_NOTSUCCESS",
+	USER_NOT_IN_DB: 'USER_NOT_IN_DB',
 	CONFIRM_EMAIL_PENDING: "CONFIRM_EMAIL_PENDING",
 	CONFIRM_EMAIL_SUCCESS: "CONFIRM_EMAIL_SUCCESS",
 	CONFIRM_EMAIL_FAIL: "CONFIRM_EMAIL_FAIL"
@@ -120,6 +121,8 @@ export function userExist(email) {
 			console.log(response);
 			if (response.data == true) {
 				dispatch({type: userActions.USER_EXIST_SUCCESS});
+			} else if (response.data == 'notfound') {
+				dispatch({type: userActions.USER_NOT_IN_DB});
 			} else {
 				dispatch({type: userActions.USER_EXIST_NOTSUCCESS});
 			}

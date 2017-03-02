@@ -13,6 +13,7 @@ export default function reducer(state={
 	token: localStorage.getItem("token"),
 	userExistPending: false,
 	userExistSuccess: null,
+	userInDB: null,
 	userEmailConfirm: false,
 	error: null	
 }, action) {
@@ -65,13 +66,16 @@ export default function reducer(state={
 			return {...state, userExistPending: true, userEmailConfirm: false}
 		}
 		case userActions.USER_EXIST_SUCCESS: {
-			return {...state, userExistSuccess: true, userExistPending: false, userEmailConfirm: false}
+			return {...state, userExistSuccess: true, userInDB: true, userExistPending: false, userEmailConfirm: false}
 		}
 		case userActions.USER_EXIST_RESET: {
-			return {...state, userExistSuccess: null, userEmailConfirm: false}
+			return {...state, userExistSuccess: null, userEmailConfirm: false, userInDB: null}
 		}
 		case userActions.USER_EXIST_NOTSUCCESS: {
-			return {...state, userExistSuccess: false, userExistPending: false}
+			return {...state, userExistSuccess: false, userInDB: true, userExistPending: false}
+		}
+		case userActions.USER_NOT_IN_DB: {
+			return{...state, userExistSuccess: false, userInDB: false, userExistPending: false}
 		}
 		case userActions.USER_EXIST_FAIL: {
 			return {...state, userExistSuccess: null, userExistPending: false, error: action.payload}
