@@ -165,7 +165,7 @@ export default class Auth extends React.Component {
 				authPasswordConfirm = 
 				<div class="input-group">
 					<span class="input-group-addon auth-input-addon" id="basic-addon1"><i class="fa fa-unlock fa-lg"></i></span>
-					<input type="password" class="form-control auth-password-confirm" data-toggle="tooltip" data-placement="top" title="Confirm password. When they match, you will be registered automatically"  onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
+					<input type="password" class="form-control auth-password-confirm" data-toggle="tooltip" data-placement="top" title="Confirm password. When they match, you will be registered automatically" onFocus={() => {$('.auth-password-confirm').tooltip('hide')}}  onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
 				</div>
 
 				passwordTooltip = "New password. 8 characters at least";
@@ -175,7 +175,7 @@ export default class Auth extends React.Component {
 			authPassword = 
 			<div class="input-group mt-3 mb-3">
 				<span class="input-group-addon auth-input-addon" id="basic-addon1"><i class="fa fa-unlock-alt fa-lg"></i></span>
-				<input type="password" key={this.state.passwordComponentKey}  ref="passwordComponent" data-toggle="tooltip" data-placement="top" title={`${passwordTooltip}`}  class="form-control auth-password-pass" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
+				<input type="password" key={this.state.passwordComponentKey}  ref="passwordComponent" data-toggle="tooltip" data-placement="top" title={`${passwordTooltip}`}  class="form-control auth-password-pass" onFocus={() => {$('.auth-password-pass').tooltip('hide')}} onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
 			</div>
 		}
 
@@ -204,7 +204,7 @@ export default class Auth extends React.Component {
 			  	<div class="fields d-flex flex-column">
 				    <div class="input-group">
 				    	<span class="input-group-addon auth-input-addon" id="basic-addon1"><i class="fa fa-envelope fa-lg"></i></span>
-				    	<input type="text" class="form-control auth-login" data-toggle="tooltip" data-placement="top" title="Your NU email" placeholder="name.lastname@nu.edu.kz" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
+				    	<input type="text" class="form-control auth-login" data-toggle="tooltip" data-placement="top" title="Your NU email" placeholder="name.lastname@nu.edu.kz" onFocus={() => {$('.auth-login').tooltip('hide')}} onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
 				    </div>
 				    {authPassword}
 				    {authPasswordConfirm}
