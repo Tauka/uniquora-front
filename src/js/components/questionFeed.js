@@ -40,10 +40,17 @@ export default class QuestionFeed extends React.Component {
 
 
 		return (
-			<div class="card question-feed" onClick={ this.props.onClick }>
+			<div class="card question-feed">
 				<div class="card-header d-flex flex-row align-items-center justify-content-end">
-					<div class="question-title mr-auto">{ question.title }</div>
+					<div class="question-title mr-auto" onClick={ this.props.onClick }>{ question.title }</div>
 					<div class="badge badge-pill badge-info" data-toggle="tooltip" data-placement="top" title={`${question.course.COURSETITLE}`}>{ question.course.COURSECODE }</div>
+					<div class="btn-group dropup ml-3">
+					  <button type="button" class="btn menu-toggle" data-toggle="dropdown"><i class="fa fa-ellipsis-v fa-lg" aria-hidden="true"></i></button>
+					  <div class="dropdown-menu">
+					  	<button class="dropdown-item question-feed-menu-delete d-flex flex-row justify-content-between align-items-center">Edit <i class="fa fa-pencil" aria-hidden="true"></i></button>
+					  	<button class="dropdown-item item-danger question-feed-menu-delete d-flex flex-row justify-content-between align-items-center" style={{color: "#d9534f"}}>Delete <i class="fa fa-trash" aria-hidden="true"></i></button>
+					  </div>
+					</div>
 				</div>
 			  	{ bestAnswer }
 			</div>

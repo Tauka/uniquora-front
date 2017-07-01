@@ -3,6 +3,19 @@
 	margin: 0 0 2vw 0;
 }
 
+.dropdown-menu {
+	z-index: 100000000;
+	min-width: 5rem !important;
+
+	button {
+		width: 8rem;
+	}
+
+	button:focus {
+		color: inherit !important;
+	}
+}
+
 .card-header {
 	background-color: white;
 
@@ -10,6 +23,10 @@
 		font-size: 1.2rem;
 		font-weight: 400;
 		color: #373A3C;
+	}
+
+	.question-title:hover{
+		text-decoration: underline;
 	}
 
 	.badge {

@@ -10,7 +10,6 @@ export default class FeedMain extends React.Component {
 		super(props);
 		this.handleChange = this.handleChange.bind(this);
 		this.handleScroll = this.handleScroll.bind(this);
-		this.onRootClick = this.onRootClick.bind(this);
 		this.goToUp = this.goToUp.bind(this);
 		this.removeTag = this.removeTag.bind(this);
 		this.state = {
@@ -18,17 +17,17 @@ export default class FeedMain extends React.Component {
 			suggestions: [
 				"somehting"
 			],
-			dropdownRender: true,
+			dropdownRender: false,
 			tags: [
 			],
-			atBottom: false,
-			prevScroll: 0
+			atBottom: false
 
 		}
 	}
 
 	componentWillMount() {
-		
+		console.log("COMPONENT WILL MOUNT FEEDMAIN");
+		this.props.fetchQuestions(1);
 	}
 
 	componentDidMount() {
@@ -56,10 +55,18 @@ export default class FeedMain extends React.Component {
 	}
 
 	handleChange(event) {
-		this.setState({
-			typedValue: event.target.value,
-			dropdownRender: true
-		});
+
+		if (event.target.value == "") {
+			this.setState({
+				typedValue: event.target.value,
+				dropdownRender: false
+			});
+		} else {
+			this.setState({
+				typedValue: event.target.value,
+				dropdownRender: true
+			});
+		}
 	}
 
 	handleScroll(event) {
@@ -147,12 +154,6 @@ export default class FeedMain extends React.Component {
 		$('[data-toggle="tooltip"]').tooltip('hide');
 	}
 
-	onRootClick() {
-		this.setState({
-			dropdownRender: false
-		});
-	}
-
 
 
 	Onclick() {
@@ -161,7 +162,8 @@ export default class FeedMain extends React.Component {
 
 
 	autoComplete(suggestions, typedValue, dropdownRender, onclickFunc, style, questionButton) {
-		if (typedValue != "" && typedValue != null && dropdownRender) {
+		console.log(dropdownRender);
+		if (typedValue != null && dropdownRender) {
 			return <AutoComplete typedValue={typedValue} onclick={ onclickFunc } suggestions={suggestions} addQuestion={questionButton} style={style}/>
 		} 
 	}
@@ -233,7 +235,7 @@ export default class FeedMain extends React.Component {
 		return (
 			<div style={{flexBasis: "40%"}}>
 				
-				<div class="left-content" onClick={this.onRootClick}>
+				<div class="left-content">
 					<div class="up-area d-flex justify-content-center align-items-center" onClick={this.goToUp}>
 						<div id="up"><b>UP</b></div>
 					</div>
@@ -241,7 +243,7 @@ export default class FeedMain extends React.Component {
 					<div class="filter" style={{flexBasis: "50%"}}>
 						<div class="filter-title"> Filters </div>
 						<div class="form-group mr-auto ml-auto">
-				    		<input type="text" class="form-control" value={this.state.typedValue} autocomplete="off" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter course name or tag" onChange={this.handleChange}/>
+				    		<input type="text" class="form-control" value={this.state.typedValue} autocomplete="off" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter course name or tag" onFocus={ () => { this.setState({dropdownRender: true}) } } onBlur={ () => { setTimeout(() => {this.setState({dropdownRender: false})}, 200) } } onChange={this.handleChange}/>
 				    		{ this.autoComplete(courses, this.state.typedValue, this.state.dropdownRender, (id, name, code) => { this.onTagClick(id, name, code)}, {width: "18%", top: "13rem"}, false) }
 				  		</div>
 				  		<div class="tags-field d-flex flex-column align-items-center">

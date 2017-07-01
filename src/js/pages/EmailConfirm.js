@@ -27,16 +27,7 @@ export default class EmailConfirm extends React.Component {
         		});
         	}
         })
-        // .then((json) => {
-        // 	// console.log(json);
-        // 	// this.setState({
-        // 	// 	confirmed: true
-        // 	// });
 
-        // 	// console.log(json);
-
-        // 	
-        // })
         .catch((er) => {
         	this.setState({
         		confirmed: false

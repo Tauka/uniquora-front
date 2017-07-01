@@ -31,12 +31,9 @@ export default class Feed extends React.Component {
 		// this.searchHandleChange = this.searchHandleChange.bind(this);
 		this.goToQuestionForm = this.goToQuestionForm.bind(this);
 		this.courseHandleChange = this.courseHandleChange.bind(this);
-		this.onRootClick = this.onRootClick.bind(this);
 
 		this.state = {
-		      searchTypedValue: "",
-		      searchDropdownRender: true,
-		      courseDropdownRender: true,
+		      courseDropdownRender: false,
 		      courseValue: "",
 		      courseValueToRequest: null,
 		      modalListener: false,
@@ -64,6 +61,7 @@ export default class Feed extends React.Component {
 	}
 
 	componentDidMount() {
+		$('[data-toggle="tooltip"]').tooltip('hide');
 	}
 
 	componentWillUnmount() {
@@ -121,15 +119,15 @@ export default class Feed extends React.Component {
 				modalListener: true
 			});
 
-			let typeaheadInput = $(".bootstrap-typeahead-input-main").detach();
-			let typeaheadInputHint = $(".bootstrap-typeahead-input-hint").detach();
-			$('.bootstrap-typeahead-input').append('<div class="input-group"></div>');
-			$(".input-group").append(typeaheadInput);
-			$(".input-group").append('<span class="input-group-btn"><button id="question-button" class="btn btn-secondary" type="button"><i class="fa fa-question fa-lg" aria-hidden="true"></i></button></span>');
-			$("#question-button").click(() => {
-				$("#question-add-modal").modal('show');
-				$("#question-title-input").val($(".bootstrap-typeahead-input-main").val());
-			});
+			// let typeaheadInput = $(".bootstrap-typeahead-input-main").detach();
+			// let typeaheadInputHint = $(".bootstrap-typeahead-input-hint").detach();
+			// $('.bootstrap-typeahead-input').append('<div class="input-group"></div>');
+			// $(".input-group").append(typeaheadInput);
+			// $(".input-group").append('<span class="input-group-btn"><button id="question-button" class="btn btn-secondary" type="button"><i class="fa fa-question fa-lg" aria-hidden="true"></i></button></span>');
+			// $("#question-button").click(() => {
+			// 	$("#question-add-modal").modal('show');
+			// 	$("#question-title-input").val($(".bootstrap-typeahead-input-main").val());
+			// });
 
 			// $(".bootstrap-typeahead-input-main").keydown((event) => {
 			// 	if (event.keyCode == 13) {
@@ -225,15 +223,6 @@ export default class Feed extends React.Component {
 	}
 
 
-	onRootClick() {
-		this.setState({
-			searchDropdownRender: false,
-			courseDropdownRender: false
-
-		})
-	}
-
-
 	// searchHandleChange(value) {
 	// 	this.setState({
 	// 		searchTypedValue: value
@@ -269,7 +258,7 @@ export default class Feed extends React.Component {
 	}
 
 	autoComplete(suggestions, typedValue, dropdownRender, onclickFunc, style, specialFunction) {
-		if (typedValue != "" && typedValue != null && dropdownRender) {
+		if (typedValue != null && dropdownRender) {
 			return <AutoComplete typedValue={typedValue} onclick={ onclickFunc } suggestions={suggestions} specFunc={specialFunction} style={style}/>
 		} 
 	}
@@ -295,11 +284,12 @@ export default class Feed extends React.Component {
 							<i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
 			 			</div>;
 		} else if (this.props.questions.questionsFetchSuccess) {
+			console.log(this.state.courseDropdownRender);
 			let questions = this.props.questions.questions.map((questionItem) => { return <QuestionFeed key={questionItem.id} question={ questionItem } />});;
 			let suggestions = this.props.questions.questions.map((questionItem) => { return { label: questionItem.title, id: questionItem.id } });
 			let courses =  this.props.questions.courses.map((course) => { return { title: course.COURSETITLE, id: course.id } });
 			 			 
-			render = <div class="feed-root" onClick={this.onRootClick} >
+			render = <div class="feed-root" >
 							<nav id="header" class="navbar fixed-top navbar-light flex-row bg-faded justify-content-center">
 								<div class="navbar-wrapper d-flex flex-row justify-content-between">
 								  	<a class="navbar-brand" onClick={this.goToFeed}><b>UNIQUORA</b></a>
@@ -333,6 +323,7 @@ export default class Feed extends React.Component {
 								      onChange={this.goToQuestionForm}
 								      defaultSelected={this.state.options.slice(0, 1)}
 								      ref={(dom) => {this.typeahead = dom}}
+								      // clearButton={ true }
 								    />
 								    
 								   
@@ -354,7 +345,7 @@ export default class Feed extends React.Component {
 							      		<input id="question-title-input" tabindex="1" class="form-control" autocomplete="off" type="text" placeholder="Your question"/>
 							      	</div>
 							      	<div id="question-form-group-course" class="form-group">
-							      		<input id="question-course-input" class="form-control mt-2" value={this.state.courseValue} type="text" autoComplete="off" onChange={this.courseHandleChange} placeholder="Enter course title"/>
+							      		<input id="question-course-input" class="form-control mt-2" value={this.state.courseValue} type="text" autoComplete="off" onFocus={ () => {this.setState({courseDropdownRender: true})} } onBlur={ () => { setTimeout(() => {this.setState({courseDropdownRender: false})}, 200) } } onChange={this.courseHandleChange} placeholder="Enter course title"/>
 							      		{ this.autoComplete(courses, this.state.courseValue, this.state.courseDropdownRender, (id, name) => { this.onCourseModalClick(id, name) }, {width: "93%", top: "10.7rem"}, null) }
 							      	</div>
 							      	<div id="question-form-group-text" class="form-group">

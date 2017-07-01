@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import AnswerExtended from '../components/answerExtended';
-import { fetchAnswers, addAnswer } from '../actions/answerActions';
-import { getQuestion } from '../actions/questionActions';
+import * as answerActions from '../actions/answerActions';
+import * as questionActions from '../actions/questionActions';
 import '../css/questionExtended.scss';
 import marked from 'marked';
 
@@ -26,6 +27,12 @@ marked.setOptions({
 		success: store.questions.questionGetSuccess,
 		error: store.questions.questionsGetError
 	};
+},
+(dispatch) => {
+	return {
+		answerActions: bindActionCreators(answerActions, dispatch),
+		questionActions: bindActionCreators(questionActions, dispatch)
+	}
 })
 export default class QuestionExtended extends React.Component {
 	constructor(props) {
@@ -38,7 +45,7 @@ export default class QuestionExtended extends React.Component {
 	}
 	
 	componentWillMount() {
-		this.props.dispatch(getQuestion(this.props.router.params.questionId));
+		this.props.questionActions.getQuestion(this.props.router.params.questionId);
 		//detect refresh
 
 		//detect url change
@@ -95,11 +102,16 @@ export default class QuestionExtended extends React.Component {
 			return;
 		}
 
+		$(".add-answer-button").html("<i class='fa fa-refresh fa-spin fa-lg fa-fw'></i>");
 
-		this.props.dispatch(addAnswer({
+		this.props.answerActions.addAnswer({
 			text: this.state.answerInput,
 			questionId: this.props.router.params.questionId
-		}));
+		})
+		.then(() => {
+			$(".add-answer-button").html("Add answer");
+		});
+		
 
 		this.setState({
 			answerInput: ""
@@ -126,7 +138,7 @@ export default class QuestionExtended extends React.Component {
 				    answersArray.push(answersObject[key]);
 				});
 
-				answers = answersArray.map((answer) => { return <AnswerExtended answer={answer}/> });
+				answers = answersArray.map((answer) => { return <AnswerExtended questionId={this.props.router.params.questionId} saveEditAction={this.props.answerActions.editAnswer} answer={answer}/> });
 			}
 
 			//calculating date
@@ -212,7 +224,7 @@ export default class QuestionExtended extends React.Component {
 				  <div id="answer-form-group" class="form-group question-extended-answer-input mt-4">
 				      <label for="exampleTextarea"><b>Your answer</b></label>
 				      <textarea id="add-answer" class="form-control" id="exampleTextarea" rows="3" value={this.state.answerInput} onChange={(e) => {this.setState({answerInput: e.target.value})}} onFocus={() => {$("#answer-form-group").removeClass("has-danger")}}></textarea>
-				      <button class="btn btn-primary mt-2 mr-auto" onClick={this.addAnswer}> Add answer </button>
+				      <button class="btn btn-primary mt-2 mr-auto add-answer-button" style={{width: "20%"}} onClick={this.addAnswer}> Add answer</button>
 			    	</div>
 
 

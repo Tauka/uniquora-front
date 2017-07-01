@@ -4,7 +4,7 @@ import { userActions } from "../actions/userActions";
 export default function reducer(state={
 	authorizedUser: {},
 	registerPending: false,
-	registerSuccess: false,
+	registerSuccess: null,
 	authorizePending: false,
 	userInfoPending: false,
 	userInfoSuccess: false,
@@ -19,7 +19,7 @@ export default function reducer(state={
 }, action) {
 	switch(action.type) {
 		case userActions.USER_REGISTER_PENDING: {
-			return {...state, registerPending: true}
+			return {...state, registerPending: true, registerSuccess: null, userExistSuccess: null, userInDB: null, userEmailConfirm: false}
 		}
 		case userActions.USER_REGISTER_SUCCESS: {
 			return {...state, registerPending: false, registerSuccess: true, userExistPending: false, userExistSuccess: null, userEmailConfirm: true}
@@ -63,7 +63,7 @@ export default function reducer(state={
 			return {...state, isAuth: false, token: ""}
 		}
 		case userActions.USER_EXIST_PENDING: {
-			return {...state, userExistPending: true, userEmailConfirm: false}
+			return {...state, userExistPending: true, userEmailConfirm: false, userExistSuccess: null, userInDB: null}
 		}
 		case userActions.USER_EXIST_SUCCESS: {
 			return {...state, userExistSuccess: true, userInDB: true, userExistPending: false, userEmailConfirm: false}

@@ -24,6 +24,32 @@ html {
   }
 }
 
+.menu-toggle {
+	background-color: transparent;
+
+	i {
+		color: #adb5bd;
+		transition: color 0.5s;
+	}
+
+}
+
+.menu-toggle:hover {
+	background-color: #dee2e6;
+
+	i {
+		color: black;
+		transition: color 0.5s;
+	}
+	
+}
+
+.menu-toggle:focus {
+	outline: none;
+	box-shadow:none;
+	border-color:transparent;
+}
+
 
 
 .loading {

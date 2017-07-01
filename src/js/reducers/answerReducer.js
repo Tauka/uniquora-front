@@ -20,13 +20,24 @@ export default function reducer(state={
 			return {...state, answerFetching: false, answerFetched: false, pins: action.payload}
 		}
 		case answerActions.ANSWER_ADD_PENDING: {
-			return {...state, answerPending: true}
+			return {...state, answerPending: true, answerSuccess: false}
 		}
 		case answerActions.ANSWER_ADD_SUCCESS: {
 
 			// state.answers[`${action.newAnswer.id}`] = action.newAnswer;
 			let newAnswers = Object.assign({}, state.answers);
 			newAnswers[`${action.newAnswer.id}`] = action.newAnswer;
+
+			return {...state, answerPending: false, answerSuccess: true, answers: newAnswers}
+		}
+		case answerActions.ANSWER_EDIT_PENDING: {
+			return {...state, answerPending: true, answerSuccess: false}
+		}
+		case answerActions.ANSWER_EDIT_SUCCESS: {
+			console.log(action.editAnswer);
+
+			let newAnswers = Object.assign({}, state.answers);
+			newAnswers[`${action.editAnswer.id}`] = action.editAnswer;
 
 			return {...state, answerPending: false, answerSuccess: true, answers: newAnswers}
 		}

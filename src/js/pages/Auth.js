@@ -3,6 +3,7 @@ import { hashHistory } from 'react-router';
 import { connect } from "react-redux";
 import { registerUser, authorizeUser, logoutUser, userExist, userExistReset } from "../actions/userActions";
 import auth from "../css/auth.scss";
+import md5 from 'blueimp-md5';
 // import ReactSVG from "react-svg";
 
 
@@ -17,8 +18,7 @@ export default class Auth extends React.Component {
 		this.state = {
 			authLogin: "",
 			authPassword: "",
-			authPasswordConfirm: "",
-			passwordComponentKey: Math.random()
+			authPasswordConfirm: ""
 		}
 	};
 
@@ -78,6 +78,7 @@ export default class Auth extends React.Component {
 			authLogin: authLogin
 		});
 
+
 		this.setState({
 			authPassword: authPassword
 		});
@@ -117,10 +118,10 @@ export default class Auth extends React.Component {
 	 }
 
 	 autoLogin(authLogin, authPassword) {
- 		if (authPassword.length >= 5 && this.props.user.userExistSuccess) {
+ 		if (authPassword.length >= 8 && this.props.user.userExistSuccess) {
 	 		this.props.dispatch(authorizeUser({
 	 			email: authLogin,
-	 			password: authPassword
+	 			password: md5(authPassword)
 	 		}));
 	 	}
 	 }
@@ -139,18 +140,12 @@ export default class Auth extends React.Component {
 	 	
 	 }
 
-	 // buttonLogin() {
-	 // 	this.props.dispatch(authorizeUser({
-	 // 		email: this.state.authLogin,
-	 // 		password: this.state.authPassword
-	 // 	}));
-	 // }
-
 	render() {
 
 		let userExistMessage;
 		let authPassword;
 		let authPasswordConfirm;
+		let authHint;
 		let loading;
 		let confirmail;
 		let passwordTooltip = "Password";
@@ -159,33 +154,32 @@ export default class Auth extends React.Component {
 
 		//userExistSuccess == null => response has not been sent; true or false => response has been sent
 		if (this.props.user.userExistSuccess != null && this.props.user.userInDB) {
-			userExistMessage = this.props.user.userExistSuccess ? <h5 class="user-exist">LOGIN</h5> : <h5 class="user-exist">REGISTER</h5>
+			userExistMessage = this.props.user.userExistSuccess ? <h3 class="user-exist" style={{color: "#5cb85c"}}>LOGIN</h3> : <h3 class="user-exist" style={{color: '#428bca'}}>REGISTER</h3>
 
 			if (!this.props.user.userExistSuccess) {
 				authPasswordConfirm = 
 				<div class="input-group">
 					<span class="input-group-addon auth-input-addon" id="basic-addon1"><i class="fa fa-unlock fa-lg"></i></span>
-					<input type="password" class="form-control auth-password-confirm" data-toggle="tooltip" data-placement="top" title="Confirm password. When they match, you will be registered automatically" onFocus={() => {$('.auth-password-confirm').tooltip('hide')}}  onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
+					<input type="password" class="form-control auth-password-confirm" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
 				</div>
-
-				passwordTooltip = "New password. 8 characters at least";
+				authHint = <div class="auth-hint mt-4" style={{textAlign: 'center'}}> Password must be at least 8 characters long. <br/> When password will match, you will be registered automatically </div>;
 			}
 
 
 			authPassword = 
 			<div class="input-group mt-3 mb-3">
 				<span class="input-group-addon auth-input-addon" id="basic-addon1"><i class="fa fa-unlock-alt fa-lg"></i></span>
-				<input type="password" key={this.state.passwordComponentKey}  ref="passwordComponent" data-toggle="tooltip" data-placement="top" title={`${passwordTooltip}`}  class="form-control auth-password-pass" onFocus={() => {$('.auth-password-pass').tooltip('hide')}} onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
+				<input type="password"  ref="passwordComponent" class="form-control auth-password-pass" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
 			</div>
 		} else if (this.props.user.userInDB == false) {
-			userExistMessage = <h5 class="user-exist"> NOT IN DB </h5>;
+			userExistMessage = <h3 class="user-exist" style={{color: '#D9534F'}}> NOT IN OUR DATABASE </h3>;
 		}
 
 
-		loading = this.props.user.userExistPending ? <h5 class="user-exist-loading"> LOADING </h5> : null;
+		loading = this.props.user.userExistPending || this.props.user.registerPending ? <i class="fa fa-cog fa-3x fa-spin fa-fw"></i> : null;
 
 		if (this.props.user.userEmailConfirm ) {
-			confirmail = <h5 class="user-exist-loading"> CHECK YOUR EMAIL </h5>;
+			confirmail = <h3 class="user-exist-loading" style={{color: '#5bc0de'}}> CHECK YOUR EMAIL FOR CONFIRMATION LETTER </h3>;
 			userExistMessage = null;
 		} else {
 			confirmail = null;
@@ -206,10 +200,11 @@ export default class Auth extends React.Component {
 			  	<div class="fields d-flex flex-column">
 				    <div class="input-group">
 				    	<span class="input-group-addon auth-input-addon" id="basic-addon1"><i class="fa fa-envelope fa-lg"></i></span>
-				    	<input type="text" class="form-control auth-login" data-toggle="tooltip" data-placement="top" title="Your NU email" placeholder="name.lastname@nu.edu.kz" onFocus={() => {$('.auth-login').tooltip('hide')}} onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
+				    	<input type="text" class="form-control auth-login" placeholder="name.lastname@nu.edu.kz" onChange={this.handleChange.bind(this)} aria-describedby="basic-addon1"/>
 				    </div>
 				    {authPassword}
 				    {authPasswordConfirm}
+				    {authHint}
 			  	</div>
 				
 			</div>

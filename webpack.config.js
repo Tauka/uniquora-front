@@ -42,7 +42,8 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-        API_ROOT: JSON.stringify("uniquora.kz"),
+        API_ROOT: JSON.stringify("localhost:9000"),
+        DEBUG: true
     }),
     new webpack.ProvidePlugin({   
             jQuery: 'jquery',

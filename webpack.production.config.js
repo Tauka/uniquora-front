@@ -45,8 +45,16 @@ module.exports = {
           minimize: true,
           debug: false
     }),
+    new webpack.optimize.UglifyJsPlugin({
+      comments: false,
+      compress: {
+        warnings: false,
+        drop_console: true,
+      }
+    }),
     new webpack.DefinePlugin({
         API_ROOT: JSON.stringify("uniquora.kz"),
+        DEBUG: false
     }),
     new webpack.ProvidePlugin({   
             jQuery: 'jquery',
