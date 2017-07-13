@@ -34,10 +34,19 @@ export default function reducer(state={
 			return {...state, answerPending: true, answerSuccess: false}
 		}
 		case answerActions.ANSWER_EDIT_SUCCESS: {
-			console.log(action.editAnswer);
 
 			let newAnswers = Object.assign({}, state.answers);
 			newAnswers[`${action.editAnswer.id}`] = action.editAnswer;
+
+			return {...state, answerPending: false, answerSuccess: true, answers: newAnswers}
+		}
+		case answerActions.ANSWER_REMOVE_SUCCESS: {
+			let newAnswers = Object.assign({}, state.answers);
+			delete newAnswers[`${action.removeAnswer.id}`];
+
+			//for some reason, this does not work in promise
+			//so I put it here
+			$("#deleteModal").modal('hide');
 
 			return {...state, answerPending: false, answerSuccess: true, answers: newAnswers}
 		}

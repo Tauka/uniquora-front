@@ -10,7 +10,10 @@ export const answerActions = {
 	ANSWER_UPDATE: "ANSWER_UPDATE",
 	ANSWER_EDIT_PENDING: "ANSWER_EDIT_PENDING",
 	ANSWER_EDIT_SUCCESS: "ANSWER_EDIT_SUCCESS",
-	ANSWER_EDIT_FAIL: "ANSWER_EDIT_FAIL"
+	ANSWER_EDIT_FAIL: "ANSWER_EDIT_FAIL",
+	ANSWER_REMOVE_PENDING: "ANSWER_REMOVE_PENDING",
+	ANSWER_REMOVE_SUCCESS: "ANSWER_REMOVE_SUCCESS",
+	ANSWER_REMOVE_FAIL: "ANSWER_REMOVE_FAIL"
 }
 
 //!!!DUMMY ANSWER URL
@@ -59,20 +62,37 @@ export function addAnswer(answer) {
 export function editAnswer(answer) {
 	return function(dispatch, getState) {
 		dispatch({type: answerActions.ANSWER_EDIT_PENDING});
+		console.log(answer);
 		return axios.post(`http://${API_ROOT}/api/answers/edit`, answer,
 		{
 			headers: {'JWT': getState().users.token}
 		})
 		.then((response) => {
-			console.log(response.data);
 			dispatch({type: answerActions.ANSWER_EDIT_SUCCESS, editAnswer: response.data});
-			// dispatch(updateLatestAnswer(answer.questionId, response.data));
-			// dispatch(getQuestion(answer.questionId));
 
 		})
 		.catch((err) => {
 			dispatch({
 				type: answerActions.ANSWER_EDIT_FAIL,
+				payload: err.response.data
+			});
+		});
+	}
+}
+
+export function removeAnswer(id) {
+	return function(dispatch, getState) {
+		dispatch({type: answerActions.ANSWER_REMOVE_PENDING});
+		return axios.get(`http://${API_ROOT}/api/answers/remove/${id}`,
+		{
+			headers: {'JWT': getState().users.token}
+		})
+		.then((response) => {
+			dispatch({type: answerActions.ANSWER_REMOVE_SUCCESS, removeAnswer: response.data});
+		})
+		.catch((err) => {
+			dispatch({
+				type: answerActions.ANSWER_REMOVE_FAIL,
 				payload: err.response.data
 			});
 		});

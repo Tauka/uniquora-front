@@ -14,6 +14,7 @@ export default class AnswerExtended extends React.Component {
 
 		this.edit = this.edit.bind(this);
 		this.saveEdit = this.saveEdit.bind(this);
+		this.removeAnswer = this.removeAnswer.bind(this);
 
 		this.state = {
 			edit: false,
@@ -29,7 +30,7 @@ export default class AnswerExtended extends React.Component {
 
 	handleEditInput = (e) => {
 		this.setState({
-			handleEditInput: e.target.value
+			editInput: e.target.value
 		})
 	}
 
@@ -37,23 +38,35 @@ export default class AnswerExtended extends React.Component {
 		$(".edit-answer-button").html("<i class='fa fa-refresh fa-spin fa-lg fa-fw'></i>");
 
 		this.props.saveEditAction({
-			text: this.state.handleEditInput,
 			questionId: this.props.questionId,
-			answerId: this.props.answer.id
+			answerId: this.props.answer.id,
+			text: this.state.editInput
 		})
-		.then(() => {
-			$(".add-answer-button").html("Save");
-
-			this.setState({
-				edit: false
-			});
-		})
+			.then(() => {
+				$(".edit-answer-button").html("Save");
+				this.setState({
+					edit: false
+				});
+			})
 
 		
 	}
 
+	removeAnswer() {
+		// $("#deleteModal").modal('hide');
+		$(".modal-delete-button").html("<i class='fa fa-refresh fa-spin fa-lg fa-fw'></i>");
+			this.props.removeAnswerAction(this.props.answer.id)
+				.then(() => {
+					console.log("tauka");
+					$(".modal-delete-button").html("Delete");
+					
+				});
+
+
+	}
+
 	render() {
-		const { text, creator, createdDate, modifiedDate } = this.props.answer;
+		const { text, creator, createdDate, modifiedDate, isMine } = this.props.answer;
 		const { saveEditAction } = this.props;
 
 
@@ -138,13 +151,24 @@ export default class AnswerExtended extends React.Component {
 					  		<i class="fa fa-calendar-o mr-2"/>
 					  		<div class="date mr-2">{day}.{month}.{year}</div>
 					  	</div>
-					  	<div class="btn-group dropup ml-2">
-					  	  <button type="button" class="btn menu-toggle" data-toggle="dropdown"><i class="fa fa-ellipsis-v fa-lg" aria-hidden="true"></i></button>
-					  	  <div class="dropdown-menu">
-					  	  	<button type="button" class="dropdown-item question-feed-menu-delete d-flex flex-row justify-content-between align-items-center" onClick={this.edit}>Edit <i class="fa fa-pencil" aria-hidden="true"></i></button>
-					  	  	<button type="button" class="dropdown-item item-danger question-feed-menu-delete d-flex flex-row justify-content-between align-items-center" data-toggle="modal" data-target="#deleteModal" style={{color: "#d9534f"}}>Delete <i class="fa fa-trash" aria-hidden="true"></i></button>
-					  	  </div>
-					  	</div>
+
+					  	{isMine ?
+						  	<div class="btn-group dropup ml-2">
+						  	  <button type="button" class="btn menu-toggle" data-toggle="dropdown"><i class="fa fa-ellipsis-v fa-lg" aria-hidden="true"></i></button>
+						  	  <div class="dropdown-menu">
+						  	  	<button type="button" class="dropdown-item question-feed-menu-delete d-flex flex-row justify-content-between align-items-center" onClick={this.edit}>Edit <i class="fa fa-pencil" aria-hidden="true"></i></button>
+						  	  	<button type="button" class="dropdown-item item-danger question-feed-menu-delete d-flex flex-row justify-content-between align-items-center" data-toggle="modal" data-target="#deleteModal" style={{color: "#d9534f"}}>Delete <i class="fa fa-trash" aria-hidden="true"></i></button>
+						  	  </div>
+						  	</div>
+						  	:
+						  	<div class="btn-group dropup ml-2">
+						  	  <button type="button" class="btn menu-toggle" data-toggle="dropdown"><i class="fa fa-ellipsis-v fa-lg" aria-hidden="true"></i></button>
+						  	  <div class="dropdown-menu">
+						  	  	<button type="button" class="dropdown-item question-feed-menu-delete d-flex flex-row justify-content-between align-items-center text-danger mr-0" onClick={this.edit}><p class="mb-0">Report</p> <i class="fa fa-flag" aria-hidden="true"></i></button>
+						  	  	<button type="button" class="dropdown-item item-danger question-feed-menu-delete d-flex flex-row justify-content-between align-items-center text-info" >Bookmark <i class="fa fa-bookmark" aria-hidden="true"></i></button>
+						  	  </div>
+						  	</div>
+					  	}
 					  </div>
 				    	{/*<div class="footer d-flex flex-row justify-content-between">
 					    	<div class="question-extended-answer-upvotes">
@@ -158,7 +182,7 @@ export default class AnswerExtended extends React.Component {
 					  	</div>*/}
 					{ edit }
 			  		</div>
-			  		<div class="modal fade" id="deleteModal">
+			  		<div class="modal" id="deleteModal">
 			  		  <div class="modal-dialog" role="document">
 			  		    <div class="modal-content">
 			  		      <div class="modal-header">
@@ -172,7 +196,7 @@ export default class AnswerExtended extends React.Component {
 			  		      </div>
 			  		      <div class="modal-footer">
 			  		        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-			  		        <button type="button" class="btn btn-danger">Delete</button>
+			  		        <button type="button" class="btn btn-danger modal-delete-button" onClick={this.removeAnswer}>Delete</button>
 			  		      </div>
 			  		    </div>
 			  		  </div>

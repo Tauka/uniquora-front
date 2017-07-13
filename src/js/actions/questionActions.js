@@ -31,7 +31,7 @@ export function fetchQuestions(page) {
 		.then((response) => {				
 			//if registration is successful tell it to reducer and authorize user
 			if (response.data.count > 0) {
-				dispatch({type: questionActions.QUESTIONS_FETCH_SUCCESS, payload: response.data});
+				dispatch({type: questionActions.QUESTIONS_FETCH_SUCCESS, payload: response.data, page: page});
 			} else {
 				dispatch({type: questionActions.QUESTIONS_FETCH_EMPTY})
 			}

@@ -137,8 +137,8 @@ export default class QuestionExtended extends React.Component {
 				Object.keys(answersObject).forEach(key => {
 				    answersArray.push(answersObject[key]);
 				});
-
-				answers = answersArray.map((answer) => { return <AnswerExtended questionId={this.props.router.params.questionId} saveEditAction={this.props.answerActions.editAnswer} answer={answer}/> });
+				
+				answers = answersArray.map((answer) => { return <AnswerExtended questionId={this.props.router.params.questionId} removeAnswerAction={this.props.answerActions.removeAnswer} saveEditAction={this.props.answerActions.editAnswer} answer={answer}/> });
 			}
 
 			//calculating date

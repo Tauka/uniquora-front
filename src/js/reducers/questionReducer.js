@@ -29,7 +29,17 @@ export default function reducer(state={
 			return {...state, questionsFetchPending: true, questionsFetchInitialPending: initPend}
 		}
 		case questionActions.QUESTIONS_FETCH_SUCCESS: {
-			return {...state, questionsFetchPending: false, questionsFetchSuccess: true, questions: [...state.questions, ...action.payload.data], questionsFetchInitialPending: false, loadedPage: state.loadedPage + 1}
+			let newQuestions = [];
+
+			if (action.page > 1 && action.page != state.loadedPage) {
+				newQuestions = [...state.questions, ...action.payload.data];
+			} else if (action.page == state.loadedPage) {
+				newQuestions = [...state.questions]
+			} else {
+				newQuestions = [...action.payload.data]
+			}
+
+			return {...state, questionsFetchPending: false, questionsFetchSuccess: true, questions: newQuestions, questionsFetchInitialPending: false, loadedPage: state.loadedPage + 1}
 		}
 		case questionActions.QUESTIONS_FETCH_EMPTY: {
 			return {...state, questionsFetchPending: false, questionsFetchSuccess: true, questionsEmpty: true, questionsFetchInitialPending: false}

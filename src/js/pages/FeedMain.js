@@ -84,6 +84,7 @@ export default class FeedMain extends React.Component {
 
 	    	//fetch new questions
 	    	if (!this.props.questionsEmpty) {
+	    		console.log("FETCH QUESTIONS!");
 	    		this.props.fetchQuestions(this.props.loadedPage + 1);
 	    	}
 
@@ -170,7 +171,7 @@ export default class FeedMain extends React.Component {
 
 	render() {
 		const { questions } = this.props;
-
+		console.log("RENDER");
 		//sorting from latest to oldest
 		let questionsSorted = questions.sort((q1, q2) => {
 			if (q1.createdDate > q2.createdDate) {
@@ -203,6 +204,8 @@ export default class FeedMain extends React.Component {
 		let questionsRender = questionsFiltered.map((question) => {
 			return <QuestionFeed question={question} key={question.id} onClick={() => { this.goToQuestionForm(question.id) }}/>
 		});
+
+		console.log(questions);
 
 		let tagsRender = this.state.tags.map((tag) => {
 			return <span class="badge badge-pill badge-primary mt-2" key={tag.id} data-toggle="tooltip" data-placement="top" title={`${tag.name}`} onClick={() => {this.removeTag(tag)}}>{ tag.code }</span>
